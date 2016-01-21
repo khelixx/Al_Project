@@ -14,12 +14,12 @@ import gameframework.game.SpriteManagerDefaultImpl;
 
 public class Player extends GameMovable implements Drawable, GameEntity,Overlappable  {
 
-	public static final int RENDERING_SIZE = 16;
+	public static final int RENDERING_SIZE = 90;
 	protected final SpriteManager spriteManager;
 	protected boolean movable = true;
 	
 	public Player(Canvas canvas){
-			spriteManager = new SpriteManagerDefaultImpl("images/zelda.png",
+			spriteManager = new SpriteManagerDefaultImpl("images/zelda.gif",
 					canvas, RENDERING_SIZE, 4);
 			spriteManager.setTypes(
 					"right", "left","static",
