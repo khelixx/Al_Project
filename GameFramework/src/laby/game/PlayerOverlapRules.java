@@ -3,6 +3,8 @@ package laby.game;
 import java.awt.Point;
 import java.util.Vector;
 
+import game_entities.Player;
+import game_entities.Wall_laby;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
 import gameframework.game.GameUniverse;
@@ -32,6 +34,10 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	@Override
 	public void applyOverlapRules(Vector<Overlap> overlappables) {
 		super.applyOverlapRules(overlappables);
+	}
+	
+	public void appyOverlapRules(Player player, Wall_laby wall){
+		
 	}
 
 }
