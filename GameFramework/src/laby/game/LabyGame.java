@@ -36,23 +36,6 @@ public class LabyGame implements Game, Observer  {
 
 	private GameLevelDefaultImpl currentPlayedLevel = null;
 	protected int levelNumber;
-	protected int lines, row;
-	
-	public int getLines() {
-		return lines;
-	}
-
-	public void setLines(int lines) {
-		this.lines = lines;
-	}
-
-	public int getRow() {
-		return row;
-	}
-
-	public void setRow(int row) {
-		this.row = row;
-	}
 
 	protected ArrayList<GameLevel> gameLevels;
 
@@ -85,7 +68,7 @@ public class LabyGame implements Game, Observer  {
 		Container c = createStatusBar();
 
 		defaultCanvas = new CanvasDefaultImpl();
-		defaultCanvas.setSize(16 * 28, 16 * 8);
+		defaultCanvas.setSize(40 * 28, 40 * 8);
 		f.add(defaultCanvas);
 		f.add(c, BorderLayout.NORTH);
 		f.pack();
@@ -177,7 +160,7 @@ public class LabyGame implements Game, Observer  {
 	public void start() {
 		score[0].addObserver(this);
 		life[0].addObserver(this);
-		life[0].setValue(1);
+		life[0].setValue(3);
 		score[0].setValue(0);
 		levelNumber = 0;
 		for (GameLevel level : gameLevels) {
