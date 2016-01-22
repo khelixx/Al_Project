@@ -10,14 +10,14 @@ import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall_laby implements Drawable, MoveBlocker, GameEntity{
-
+public class Wall implements Drawable, MoveBlocker, GameEntity {
+	
 	protected static DrawableImage image = null;
 	int x, y;
 	public static final int RENDERING_SIZE = 40;
 
-	public Wall_laby (Canvas defaultCanvas, int xx, int yy) {
-		image = new DrawableImage("images/block.gif", defaultCanvas);
+	public Wall(Canvas defaultCanvas, int xx, int yy , String images) {
+		image = new DrawableImage(images, defaultCanvas);
 		x = xx;
 		y = yy;
 	}

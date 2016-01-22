@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Vector;
 
 import game_entities.Player;
+import game_entities.Wall_damages;
 import game_entities.Wall_laby;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
@@ -36,8 +37,8 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		super.applyOverlapRules(overlappables);
 	}
 	
-	public void appyOverlapRules(Player player, Wall_laby wall){
-		
+	public void overlapRule(Player player, Wall_damages wall){
+		life.setValue(life.getValue() - 1);
+		System.out.println("boum");
 	}
-
 }

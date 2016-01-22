@@ -14,15 +14,15 @@ import gameframework.game.SpriteManagerDefaultImpl;
 
 public class Player extends GameMovable implements Drawable, GameEntity,Overlappable  {
 
-	public static final int RENDERING_SIZE = 90;
+	public static final int RENDERING_SIZE = 40;
 	protected final SpriteManager spriteManager;
 	protected boolean movable = true;
 	
 	public Player(Canvas canvas){
 			spriteManager = new SpriteManagerDefaultImpl("images/zelda.gif",
-					canvas, RENDERING_SIZE, 4);
+					canvas, RENDERING_SIZE, 5);
 			spriteManager.setTypes(
-					"right", "left","static",
+					"left", "right",
 					"up","down");
 	}
 
@@ -47,8 +47,8 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 		} else if (tmp.getY() == -1) {
 			spriteType += "up";
 		} else {
-			spriteType = "static";
-			spriteManager.setIncrement(4);;
+			spriteType += "right";
+			spriteManager.setIncrement(4);
 			movable = false;
 		}
 		spriteManager.setType(spriteType);
@@ -57,8 +57,14 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
-		// TODO Auto-generated method stub
+		if (movable) {
+			spriteManager.increment();
+		}
 		
+	}
+	
+	public SpriteManager getSpriteManager(){
+		return spriteManager;
 	}
 
 }

@@ -29,6 +29,7 @@ public class SpriteManagerDefaultImpl implements SpriteManager {
 		image = new DrawableImage(filename, canvas);
 		this.maxSpriteNumber = maxSpriteNumber;
 		this.spriteSize = image.getImage().getWidth(null) / maxSpriteNumber;
+		System.out.println("la largeur de l'image est " + this.spriteSize);
 	}
 
 	@Override

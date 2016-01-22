@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Point;
 
 import game_entities.Player;
+import game_entities.Start;
+import game_entities.Wall_damages;
 import game_entities.Wall_laby;
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.game.CanvasDefaultImpl;
@@ -17,6 +19,8 @@ import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import laby.game.LabyGame;
 import laby.game.LabyUniverseViewPort;
+import laby.game.PlayerMoveBlocker;
+import laby.game.PlayerOverlapRules;
 import pacman.entity.Pacman;
 import pacman.entity.Wall;
 import pacman.rule.PacmanMoveBlockers;
@@ -29,17 +33,17 @@ public class First_level extends GameLevelDefaultImpl {
 
 
 	static int[][] tab = { 
-		    { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		    { 3, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 2, 1, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1 },
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1 },
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1 },
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 },};
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0, 3 },};
 	
 	
-	public static final int SPRITE_SIZE = 16;
+	public static final int SPRITE_SIZE = 40;
 			
 	public First_level(Game g) {
 		super(g);
@@ -51,9 +55,9 @@ public class First_level extends GameLevelDefaultImpl {
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
-		moveBlockerChecker.setMoveBlockerRules(new PacmanMoveBlockers());
+		moveBlockerChecker.setMoveBlockerRules(new PlayerMoveBlocker(life[0]));
 		
-		PacmanOverlapRules overlapRules = new PacmanOverlapRules(new Point(1 * SPRITE_SIZE, 1 * SPRITE_SIZE),
+		PlayerOverlapRules overlapRules = new PlayerOverlapRules(new Point(1 * SPRITE_SIZE, 1 * SPRITE_SIZE),
 				new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE), life[0], score[0], endOfGame);
 		overlapProcessor.setOverlapRules(overlapRules);
 
@@ -69,17 +73,26 @@ public class First_level extends GameLevelDefaultImpl {
 				if (tab[i][j] == 1) {
 					universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}
+				
+				if (tab[i][j] == 2) {
+					universe.addGameEntity(new Wall_damages(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+				}
+				
+				if (tab[i][j] == 3) {
+					universe.addGameEntity(new Start(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+				}
 			}
 		}
 		
-		Player myPac = new Player(canvas);
+		// Pacman definition and inclusion in the universe
+		Player player = new Player(canvas);
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
 		pacDriver.setStrategy(keyStr);
 		pacDriver.setmoveBlockerChecker(moveBlockerChecker);
 		canvas.addKeyListener(keyStr);
-		myPac.setDriver(pacDriver);
-		myPac.setPosition(new Point(1 * SPRITE_SIZE, 1 * SPRITE_SIZE));
-		universe.addGameEntity(myPac);
+		player.setDriver(pacDriver);
+		player.setPosition(new Point(0 * SPRITE_SIZE, 0 * SPRITE_SIZE));
+		universe.addGameEntity(player);
 	}
 }
