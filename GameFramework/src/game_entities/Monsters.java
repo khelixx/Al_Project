@@ -12,18 +12,18 @@ import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
 import gameframework.game.SpriteManagerDefaultImpl;
 
-public class Player extends GameMovable implements Drawable, GameEntity,Overlappable  {
+public class Monsters extends GameMovable implements Drawable, GameEntity,Overlappable{
 
 	public static final int RENDERING_SIZE = 40;
 	protected final SpriteManager spriteManager;
 	protected boolean movable = true;
 	
-	public Player(Canvas canvas){
-			spriteManager = new SpriteManagerDefaultImpl("images/zelda.gif",
-					canvas, RENDERING_SIZE, 5);
+	public Monsters(Canvas canvas){
+			spriteManager = new SpriteManagerDefaultImpl("images/monstres.gif",
+					canvas, RENDERING_SIZE, 4);
 			spriteManager.setTypes(
-					"left", "right",
-					"up","down","static");
+					"down", "left",
+					"right","up");
 	}
 
 
@@ -51,6 +51,7 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 			spriteManager.reset();
 			movable = false;
 		}
+		
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
 	}
@@ -66,4 +67,5 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 	public SpriteManager getSpriteManager(){
 		return spriteManager;
 	}
+
 }

@@ -1,9 +1,8 @@
-package pacman;
+package labyrinth;
 
 import gameframework.game.GameDefaultImpl;
 import gameframework.game.GameLevel;
 import laby.game.LabyGame;
-import labyrinth.First_level;
 
 import java.util.ArrayList;
 

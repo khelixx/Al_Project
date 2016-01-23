@@ -68,7 +68,7 @@ public class LabyGame implements Game, Observer  {
 		Container c = createStatusBar();
 
 		defaultCanvas = new CanvasDefaultImpl();
-		defaultCanvas.setSize(40 * 28, 40 * 8);
+		defaultCanvas.setSize(40 * 28, 40 * 23);
 		f.add(defaultCanvas);
 		f.add(c, BorderLayout.NORTH);
 		f.pack();

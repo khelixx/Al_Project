@@ -7,16 +7,16 @@ import java.awt.Rectangle;
 
 import gameframework.base.Drawable;
 import gameframework.base.DrawableImage;
+import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
-import gameframework.game.MoveBlocker;
 
-public class Start implements Drawable, GameEntity {
+public class EndLevel implements Drawable, GameEntity, Overlappable {
 	
 	protected static DrawableImage image = null;
 	int x, y;
 	public static final int RENDERING_SIZE = 40;
-	
-	public Start(Canvas defaultCanvas, int xx, int yy) {
+
+	public EndLevel (Canvas defaultCanvas, int xx, int yy) {
 		image = new DrawableImage("images/start.gif", defaultCanvas);
 		x = xx;
 		y = yy;
@@ -35,4 +35,8 @@ public class Start implements Drawable, GameEntity {
 		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
 	}
 
+	@Override
+	public Point getPosition() {
+		return (new Point(x, y));
+	}
 }

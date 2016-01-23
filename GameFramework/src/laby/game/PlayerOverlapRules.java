@@ -3,13 +3,21 @@ package laby.game;
 import java.awt.Point;
 import java.util.Vector;
 
+import game_entities.EndLevel;
+import game_entities.Monsters;
 import game_entities.Player;
+import game_entities.Teleportation;
 import game_entities.Wall_damages;
 import game_entities.Wall_laby;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
+import gameframework.base.SpeedVectorDefaultImpl;
+import gameframework.game.GameLevel;
+import gameframework.game.GameLevelDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
+import labyrinth.First_level;
+import pacman.entity.TeleportPairOfPoints;
 
 public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	
@@ -37,8 +45,16 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		super.applyOverlapRules(overlappables);
 	}
 	
-	public void overlapRule(Player player, Wall_damages wall){
-		life.setValue(life.getValue() - 1);
-		System.out.println("boum");
+	public void overlapRule(Player player, Teleportation start) {
+		player.setPosition(start.getDestination());
+		player.getSpriteManager().setType("static");
+	}
+	
+	public void overlapRule(Player player, Monsters monster){
+		this.life.setValue(this.life.getValue() - 1);
+	}
+	
+	public void overlapRule(Player player, EndLevel end){
+		this.endOfGame.setValue(true);
 	}
 }
