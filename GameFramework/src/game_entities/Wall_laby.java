@@ -10,28 +10,9 @@ import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall_laby implements Drawable, MoveBlocker, GameEntity{
-
-	protected static DrawableImage image = null;
-	int x, y;
-	public static final int RENDERING_SIZE = 40;
-
+public class Wall_laby extends Wall{
+	
 	public Wall_laby (Canvas defaultCanvas, int xx, int yy) {
-		image = new DrawableImage("images/block.gif", defaultCanvas);
-		x = xx;
-		y = yy;
-	}
-
-	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), x, y, RENDERING_SIZE, RENDERING_SIZE,
-				null);
-	}
-
-	public Point getPos() {
-		return (new Point(x, y));
-	}
-
-	public Rectangle getBoundingBox() {
-		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
+		super(defaultCanvas,xx,yy,"images/block.gif");
 	}
 }
