@@ -12,14 +12,14 @@ import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
 import gameframework.game.SpriteManagerDefaultImpl;
 
-public class Monsters extends GameMovable implements Drawable, GameEntity,Overlappable{
+public class Monster_Dragon extends GameMovable implements Drawable, GameEntity,Overlappable{
 
 	public static final int RENDERING_SIZE = 40;
 	protected final SpriteManager spriteManager;
 	protected boolean movable = true;
 	
-	public Monsters(Canvas canvas){
-			spriteManager = new SpriteManagerDefaultImpl("images/monstres.gif",
+	public Monster_Dragon(Canvas canvas){
+			spriteManager = new SpriteManagerDefaultImpl("images/monsters.gif",
 					canvas, RENDERING_SIZE, 4);
 			spriteManager.setTypes(
 					"down", "left",
@@ -67,5 +67,4 @@ public class Monsters extends GameMovable implements Drawable, GameEntity,Overla
 	public SpriteManager getSpriteManager(){
 		return spriteManager;
 	}
-
 }

@@ -5,16 +5,19 @@ import java.awt.Point;
 import java.util.Random;
 
 import game_entities.EndLevel;
-import game_entities.Monsters;
+import game_entities.Monster_Phenix;
 import game_entities.Player;
 import game_entities.Teleportation;
 import game_entities.Wall_damages;
 import game_entities.Wall_laby;
+import game_entities.monsterCreation;
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.MoveStrategyRandom;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
+import gameframework.game.GameEntity;
 import gameframework.game.GameLevelDefaultImpl;
+import gameframework.game.GameMovable;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverseDefaultImpl;
 import gameframework.game.MoveBlockerChecker;
@@ -124,19 +127,20 @@ public class First_level extends GameLevelDefaultImpl {
 		universe.addGameEntity(player);
 		
 		// Ghosts definition and inclusion in the universe
-		Monsters monsters;
+		GameEntity monsters;
+		monsterCreation random = new monsterCreation(canvas);
+		
 		for (int t = 0; t < 10; ++t) {
 			GameMovableDriverDefaultImpl ghostDriv = new GhostMovableDriver();
 			MoveStrategyRandom ranStr = new MoveStrategyRandom();
 			ghostDriv.setStrategy(ranStr);
 			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
-			monsters = new Monsters(canvas);
-			monsters.setDriver(ghostDriv);
+			monsters = random.createMonsters();
+			((GameMovable) monsters).setDriver(ghostDriv);
 			Random randx = new Random();
 			int monster_x = randx.nextInt(25 - 1 ) + 1;
-			Random randy = new Random();
 			int monster_y = randx.nextInt(21 - 14 ) + 14;
-			monsters.setPosition(new Point(monster_x * SPRITE_SIZE, monster_y * SPRITE_SIZE));
+			((GameMovable) monsters).setPosition(new Point(monster_x * SPRITE_SIZE, monster_y * SPRITE_SIZE));
 			universe.addGameEntity(monsters);
 		}
 		

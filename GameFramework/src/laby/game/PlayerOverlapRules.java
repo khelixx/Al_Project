@@ -4,7 +4,8 @@ import java.awt.Point;
 import java.util.Vector;
 
 import game_entities.EndLevel;
-import game_entities.Monsters;
+import game_entities.Monster_Dragon;
+import game_entities.Monster_Phenix;
 import game_entities.Player;
 import game_entities.Teleportation;
 import game_entities.Wall_damages;
@@ -50,8 +51,12 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		player.getSpriteManager().setType("static");
 	}
 	
-	public void overlapRule(Player player, Monsters monster){
+	public void overlapRule(Player player, Monster_Phenix monster){
 		this.life.setValue(this.life.getValue() - 1);
+	}
+	
+	public void overlapRule(Player player, Monster_Dragon monster){
+		this.life.setValue(0);
 	}
 	
 	public void overlapRule(Player player, EndLevel end){

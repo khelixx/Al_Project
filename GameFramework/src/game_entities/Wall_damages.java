@@ -10,29 +10,11 @@ import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall_damages implements Drawable, MoveBlocker, GameEntity {
+public class Wall_damages extends Wall {
 	
-	protected static DrawableImage image = null;
-	int x, y;
-	public static final int RENDERING_SIZE = 40;
-
 	public Wall_damages (Canvas defaultCanvas, int xx, int yy) {
-		image = new DrawableImage("images/block.gif", defaultCanvas);
-		x = xx;
-		y = yy;
+		super(defaultCanvas,xx,yy,"images/block.gif");
 	}
 
-	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), x, y, RENDERING_SIZE, RENDERING_SIZE,
-				null);
-	}
-
-	public Point getPos() {
-		return (new Point(x, y));
-	}
-
-	public Rectangle getBoundingBox() {
-		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
-	}
 
 }
