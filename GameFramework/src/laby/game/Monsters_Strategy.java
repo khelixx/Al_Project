@@ -8,19 +8,16 @@ import gameframework.base.SpeedVectorDefaultImpl;
 
 public class Monsters_Strategy implements MoveStrategy{
 	SpeedVector currentMove = new SpeedVectorDefaultImpl(new Point(0, 0));
-	private int count = 0 ;
+	private boolean check = true ;
 	
 	@Override
 	public SpeedVector getSpeedVector() {
 		// TODO Auto-generated method stub
-		if ( count < 8){
+		if (check){
 			currentMove.setDirection(new Point(0, 1));
 		}
-		else if (count < 15){
-			currentMove.setDirection(new Point(0, -1));
-		}
 		else{
-			count =0;
+			currentMove.setDirection(new Point(0, -1));
 		}
 		return currentMove;
 	}
