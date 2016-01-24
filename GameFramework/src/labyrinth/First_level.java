@@ -98,7 +98,7 @@ public class First_level extends GameLevelDefaultImpl {
 		// Filling up the universe with basic non movable entities and inclusion in the universe
 		for (int i = 0; i < tab.length; ++i) {
 				for (int j = 0; j < tab[0].length; ++j) {
-				/*	if (tab[i][j] == 1) {
+					if (tab[i][j] == 1) {
 							universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
 					if (tab[i][j] == 2) {
@@ -107,7 +107,7 @@ public class First_level extends GameLevelDefaultImpl {
 					
 					if (tab[i][j] == 3) {
 					    universe.addGameEntity(new EndLevel(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
-					}*/
+					}
 				}
 		}
 		
@@ -147,10 +147,6 @@ public class First_level extends GameLevelDefaultImpl {
 		}
 		
 		GameEntity sonics = new sonics(canvas);
-		GameMovableDriverDefaultImpl sonics_driver = new GameMovableDriverDefaultImpl();
-		MoveStrategyRandom ranStr = new MoveStrategyRandom();
-		sonics_driver.setStrategy(ranStr);
-		sonics_driver.setmoveBlockerChecker(moveBlockerChecker);
 		((GameMovable) sonics).setPosition(new Point(25 * SPRITE_SIZE, 20 * SPRITE_SIZE));
 		universe.addGameEntity(sonics);
 	}	
