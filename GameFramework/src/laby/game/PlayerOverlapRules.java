@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Vector;
 
 import game_entities.EndLevel;
+import game_entities.Fireball;
 import game_entities.Monster_Dragon;
 import game_entities.Monster_Phenix;
 import game_entities.Player;
@@ -57,6 +58,10 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	
 	public void overlapRule(Player player, Monster_Dragon monster){
 		this.life.setValue(0);
+	}
+	
+	public void overlapRule(Player player, Fireball ball){
+		this.life.setValue(this.life.getValue() - 1);
 	}
 	
 	public void overlapRule(Player player, EndLevel end){

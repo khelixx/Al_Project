@@ -10,15 +10,14 @@ import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
 import gameframework.game.GameMovable;
 
-public class sonics extends GameMovable implements Drawable, GameEntity, Overlappable {
+public class Fireball extends GameMovable implements Drawable, GameEntity, Overlappable {
 	public static final int RENDERING_SIZE = 40;
 	protected static DrawableImage image = null;
 	Canvas canvas;
-	protected Point position;
 	
-	public sonics(Canvas canvas){
+	public Fireball(Canvas canvas){
 			this.canvas = canvas;
-			image = new DrawableImage("assets/images/ball.gif", canvas);
+			image = new DrawableImage("images/ball.gif", canvas);
 	}
 
 

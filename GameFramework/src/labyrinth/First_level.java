@@ -11,7 +11,7 @@ import game_entities.Teleportation;
 import game_entities.Wall_damages;
 import game_entities.Wall_laby;
 import game_entities.monsterCreation;
-import game_entities.sonics;
+import game_entities.Fireball;
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.MoveStrategyRandom;
 import gameframework.game.CanvasDefaultImpl;
@@ -25,6 +25,8 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
+import laby.game.BallMovableDriver;
+import laby.game.BallStrategy;
 import laby.game.KeyboardExtensionStrategy;
 import laby.game.LabyGame;
 import laby.game.LabyUniverseViewPort;
@@ -68,7 +70,7 @@ public class First_level extends GameLevelDefaultImpl {
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1},
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 			
 	};
@@ -115,7 +117,7 @@ public class First_level extends GameLevelDefaultImpl {
 				new Point(1 * SPRITE_SIZE, 14 * SPRITE_SIZE)));
 		
 		universe.addGameEntity(new Teleportation(canvas,new Point(26 * SPRITE_SIZE, 21 * SPRITE_SIZE),
-				new Point(27 * SPRITE_SIZE, 8 * SPRITE_SIZE)));
+				new Point(28 * SPRITE_SIZE, 14 * SPRITE_SIZE)));
 
 		
 		Player player = new Player(canvas);
@@ -132,7 +134,7 @@ public class First_level extends GameLevelDefaultImpl {
 		GameEntity monsters;
 		monsterCreation random = new monsterCreation(canvas);
 		
-		for (int t = 0; t < 10; ++t) {
+		for (int t = 0; t < 14; ++t) {
 			GameMovableDriverDefaultImpl ghostDriv = new GhostMovableDriver();
 			MoveStrategyRandom ranStr = new MoveStrategyRandom();
 			ghostDriv.setStrategy(ranStr);
@@ -146,9 +148,18 @@ public class First_level extends GameLevelDefaultImpl {
 			universe.addGameEntity(monsters);
 		}
 		
-		GameEntity sonics = new sonics(canvas);
-		((GameMovable) sonics).setPosition(new Point(25 * SPRITE_SIZE, 20 * SPRITE_SIZE));
-		universe.addGameEntity(sonics);
+		
+		
+		for ( int x = 0 ; x <6 ; ++x){
+			GameEntity sonics = new Fireball(canvas);
+			GameMovableDriverDefaultImpl ghostDriv = new BallMovableDriver();
+			BallStrategy ranStr = new BallStrategy();
+			ghostDriv.setStrategy(ranStr);
+			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
+			((GameMovable) sonics).setDriver(ghostDriv);
+			((GameMovable) sonics).setPosition(new Point(35 * SPRITE_SIZE, 20 * SPRITE_SIZE));
+			universe.addGameEntity(sonics);
+		}
 	}	
 }
 
