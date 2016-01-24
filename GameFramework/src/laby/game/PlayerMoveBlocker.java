@@ -1,5 +1,7 @@
 package laby.game;
 
+import java.awt.Point;
+
 import game_entities.*;
 import gameframework.base.ObservableValue;
 import gameframework.game.GameUniverse;
@@ -20,5 +22,4 @@ public class PlayerMoveBlocker extends MoveBlockerRulesApplierDefaultImpl {
 		universe.removeGameEntity(w);
 		play.getSpriteManager().setType("static");
 	}
-
 }
