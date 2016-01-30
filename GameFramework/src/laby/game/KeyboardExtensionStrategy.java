@@ -22,14 +22,7 @@ public class KeyboardExtensionStrategy extends MoveStrategyKeyboard{
 		int keycode = event.getKeyCode();
 		switch (keycode) {
 		case KeyEvent.VK_SPACE:
-			if (check == true){
-				speedVector.setSpeed(8);
-				check =false;
-			}
-			else{
-				speedVector.setSpeed(20);
-				check = true;
-			}
+			speedVector.setDirection(new Point(0, 0));
 			break;
 		case KeyEvent.VK_RIGHT:
 			speedVector.setDirection(new Point(1, 0));

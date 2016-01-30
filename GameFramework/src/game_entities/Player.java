@@ -17,6 +17,7 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 	public static final int RENDERING_SIZE = 40;
 	protected final SpriteManager spriteManager;
 	protected boolean movable = true;
+	private int invicibleTimer;
 	
 	public Player(Canvas canvas){
 			spriteManager = new SpriteManagerDefaultImpl("images/zelda.gif",
@@ -25,17 +26,27 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 					"left", "right",
 					"up","down","static");
 	}
+	
+	public void setInvulnerable(int timer) {
+		invicibleTimer = timer;
+	}
 
+	public boolean isVulnerable() {
+		return (invicibleTimer <= 0);
+	}
 
 	@Override
 	public Rectangle getBoundingBox() {
 		 return new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE);
 	}
+	
+	
 
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
+		getSpeedVector().setSpeed(10);
 		movable = true;
 		
 		if (tmp.getX() == 1) {
@@ -59,6 +70,9 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 	public void oneStepMoveAddedBehavior() {
 		if (movable) {
 			spriteManager.increment();
+			if (!isVulnerable()) {
+				invicibleTimer--;
+			}
 		}
 		
 	}
