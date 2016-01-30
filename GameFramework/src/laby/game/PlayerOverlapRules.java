@@ -5,12 +5,14 @@ import java.util.Vector;
 
 import game_entities.EndLevel;
 import game_entities.Fireball;
+import game_entities.Life;
 import game_entities.Monster_Dragon;
 import game_entities.Monster_Phenix;
 import game_entities.Player;
 import game_entities.Teleportation;
 import game_entities.Wall_damages;
 import game_entities.Wall_laby;
+import game_entities.Carapace;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
 import gameframework.base.SpeedVectorDefaultImpl;
@@ -18,7 +20,7 @@ import gameframework.game.GameLevel;
 import gameframework.game.GameLevelDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
-import labyrinth.First_level;
+import labyrinth.FirstLevel;
 import pacman.entity.TeleportPairOfPoints;
 
 public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
@@ -53,18 +55,30 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Player player, Monster_Phenix monster){
-		this.life.setValue(this.life.getValue() - 1);
+		if (player.isVulnerable()){
+			this.life.setValue(this.life.getValue() - 1);
+			player.setInvulnerable(20);
+		}		
 	}
 	
 	public void overlapRule(Player player, Monster_Dragon monster){
 		this.life.setValue(0);
 	}
-	
+
 	public void overlapRule(Player player, Fireball ball){
 		this.life.setValue(this.life.getValue() - 1);
 	}
 	
 	public void overlapRule(Player player, EndLevel end){
 		this.endOfGame.setValue(true);
+	}
+	
+	public void overlapRule(Player player, Carapace carapace){
+		universe.removeGameEntity(carapace);
+	}
+	
+	public void overlapRule(Player player, Life life){
+		this.life.setValue(this.life.getValue() + 1);
+		universe.removeGameEntity(life);
 	}
 }

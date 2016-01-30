@@ -11,7 +11,7 @@ public class Main {
 		LabyGame g = new LabyGame();
 		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
 
-		levels.add(new First_level(g)); // only one level is available at this time
+		levels.add(new FirstLevel(g)); // only one level is available at this time
 		
 		g.setLevels(levels);
 		g.start();

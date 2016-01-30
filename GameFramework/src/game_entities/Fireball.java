@@ -33,5 +33,6 @@ public class Fireball extends GameMovable implements Drawable, GameEntity, Overl
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
+	
 	}
 }

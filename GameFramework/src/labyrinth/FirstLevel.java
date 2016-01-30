@@ -10,10 +10,11 @@ import game_entities.Player;
 import game_entities.Teleportation;
 import game_entities.Wall_damages;
 import game_entities.Wall_laby;
-import game_entities.monsterCreation;
+import game_entities.Carapace;
 import game_entities.Fireball;
-import gameframework.base.MoveStrategyKeyboard;
-import gameframework.base.MoveStrategyRandom;
+import game_entities.Life;
+import game_entities.Monster_Dragon;
+import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameEntity;
@@ -28,29 +29,24 @@ import gameframework.game.OverlapProcessorDefaultImpl;
 import laby.game.BallMovableDriver;
 import laby.game.BallStrategy;
 import laby.game.KeyboardExtensionStrategy;
-import laby.game.LabyGame;
 import laby.game.LabyUniverseViewPort;
+import laby.game.MonstersDriver;
 import laby.game.PlayerMoveBlocker;
 import laby.game.PlayerOverlapRules;
-import pacman.entity.Ghost;
-import pacman.entity.Pacman;
-import pacman.entity.TeleportPairOfPoints;
-import pacman.entity.Wall;
-import pacman.rule.GhostMovableDriver;
-import pacman.rule.PacmanMoveBlockers;
-import pacman.rule.PacmanOverlapRules;
 
-public class First_level extends GameLevelDefaultImpl {
-	Canvas canvas ;
+public class FirstLevel extends GameLevelDefaultImpl {
+	private Canvas canvas ;
+	private int count = 8;
+	private ObservableValue<Fireball> monstersObservable[] = new ObservableValue[count];
 
-	public First_level(Game g) {
+	public FirstLevel(Game g) {
 		super(g);
 		canvas = g.getCanvas();
 	}
 	
 	static int[][] tab = { 
 		    { 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 4, 1},
 		    { 1, 0, 2, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 0, 1, 1, 1, 1, 1, 2, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
@@ -61,16 +57,16 @@ public class First_level extends GameLevelDefaultImpl {
 		    { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2 , 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 , 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
-		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		    { 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1},
+			{ 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1},
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 			
 	};
@@ -110,6 +106,35 @@ public class First_level extends GameLevelDefaultImpl {
 					if (tab[i][j] == 3) {
 					    universe.addGameEntity(new EndLevel(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
+					if (tab[i][j] == 4) {
+					    universe.addGameEntity(new Life(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					}
+					if (tab[i][j] == 5) {
+						
+						GameMovableDriverDefaultImpl monsterDriver = new MonstersDriver();
+						BallStrategy ranStr = new BallStrategy(0,1,8);
+						monsterDriver.setStrategy(ranStr);
+						monsterDriver.setmoveBlockerChecker(moveBlockerChecker);
+						Monster_Phenix phen = new Monster_Phenix(canvas);
+						phen.setDriver(monsterDriver);
+						phen.setPosition(new Point(j * SPRITE_SIZE, i * SPRITE_SIZE));
+					    universe.addGameEntity(phen);
+					}
+					
+					if (tab[i][j] == 6) {
+						GameMovableDriverDefaultImpl monsterDriver = new MonstersDriver();
+						BallStrategy ranStr = new BallStrategy(1,0,8);
+						monsterDriver.setStrategy(ranStr);
+						monsterDriver.setmoveBlockerChecker(moveBlockerChecker);
+						Monster_Dragon Dragon = new Monster_Dragon(canvas);
+						Dragon.setDriver(monsterDriver);
+						Dragon.setPosition(new Point(j * SPRITE_SIZE, i * SPRITE_SIZE));
+					    universe.addGameEntity(Dragon);
+					}
+					if (tab[i][j] == 7) {
+					    universe.addGameEntity(new Carapace(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					}
+					
 				}
 		}
 		
@@ -118,8 +143,12 @@ public class First_level extends GameLevelDefaultImpl {
 		
 		universe.addGameEntity(new Teleportation(canvas,new Point(26 * SPRITE_SIZE, 21 * SPRITE_SIZE),
 				new Point(28 * SPRITE_SIZE, 14 * SPRITE_SIZE)));
-
 		
+		universe.addGameEntity(new Teleportation(canvas,new Point(13 * SPRITE_SIZE, 1 * SPRITE_SIZE),
+				new Point(29 * SPRITE_SIZE, 5 * SPRITE_SIZE)));
+		
+		universe.addGameEntity(new Wall_laby(canvas, 2 * SPRITE_SIZE, -1 * SPRITE_SIZE));
+
 		Player player = new Player(canvas);
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		KeyboardExtensionStrategy keyStr = new KeyboardExtensionStrategy();
@@ -130,34 +159,19 @@ public class First_level extends GameLevelDefaultImpl {
 		player.setPosition(new Point(2 * SPRITE_SIZE, 0 * SPRITE_SIZE));
 		universe.addGameEntity(player);
 		
-		// Ghosts definition and inclusion in the universe
-		GameEntity monsters;
-		monsterCreation random = new monsterCreation(canvas);
-		
-		for (int t = 0; t < 14; ++t) {
-			GameMovableDriverDefaultImpl ghostDriv = new GhostMovableDriver();
-			MoveStrategyRandom ranStr = new MoveStrategyRandom();
-			ghostDriv.setStrategy(ranStr);
-			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
-			monsters = random.createMonsters();
-			((GameMovable) monsters).setDriver(ghostDriv);
-			Random randx = new Random();
-			int monster_x = randx.nextInt(25 - 1 ) + 1;
-			int monster_y = randx.nextInt(21 - 14 ) + 14;
-			((GameMovable) monsters).setPosition(new Point(monster_x * SPRITE_SIZE, monster_y * SPRITE_SIZE));
-			universe.addGameEntity(monsters);
-		}
-		
-		
-		
-		for ( int x = 0 ; x <6 ; ++x){
-			GameEntity sonics = new Fireball(canvas);
-			GameMovableDriverDefaultImpl ghostDriv = new BallMovableDriver();
-			BallStrategy ranStr = new BallStrategy();
+		for ( int x = 0 ; x <count ; ++x){
+
+			monstersObservable[x] =  new ObservableValue<Fireball>(new Fireball(canvas));
+			GameEntity sonics = monstersObservable[x].getValue();
+			GameMovableDriverDefaultImpl ghostDriv = new BallMovableDriver(monstersObservable);
+			BallStrategy ranStr = new BallStrategy(1,-1,10);
 			ghostDriv.setStrategy(ranStr);
 			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
 			((GameMovable) sonics).setDriver(ghostDriv);
-			((GameMovable) sonics).setPosition(new Point(35 * SPRITE_SIZE, 20 * SPRITE_SIZE));
+			Random randx = new Random();
+			int monster_x = randx.nextInt(10) + 28;
+			int monster_y = randx.nextInt(7) + 14;
+			((GameMovable) sonics).setPosition(new Point(monster_x * SPRITE_SIZE, monster_y * SPRITE_SIZE));
 			universe.addGameEntity(sonics);
 		}
 	}	

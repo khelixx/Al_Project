@@ -98,6 +98,7 @@ public class LabyGame implements Game, Observer  {
 
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				start();
 			}
 		});
@@ -190,13 +191,11 @@ public class LabyGame implements Game, Observer  {
 	}
 
 	public void pause() {
-		System.out.println("pause(): Unimplemented operation");
-		// currentPlayedLevel.suspend();
+		currentPlayedLevel.interrupt();
 	}
 
 	public void resume() {
-		System.out.println("resume(): Unimplemented operation");
-		// currentPlayedLevel.resume();
+		currentPlayedLevel.run();
 	}
 
 	public ObservableValue<Integer>[] score() {

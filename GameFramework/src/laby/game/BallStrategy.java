@@ -8,7 +8,11 @@ import gameframework.base.SpeedVectorDefaultImpl;
 
 public class BallStrategy implements MoveStrategy {
 	
-	SpeedVector speedVector = new SpeedVectorDefaultImpl(new Point(1, -1),10);
+	private SpeedVector speedVector;
+	
+	public BallStrategy(int vertical, int horizontal, int speed){
+		speedVector = new SpeedVectorDefaultImpl(new Point(vertical, horizontal),speed);
+	}
 	
 	@Override
 	public SpeedVector getSpeedVector() {
