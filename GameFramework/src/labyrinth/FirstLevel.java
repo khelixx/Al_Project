@@ -2,14 +2,17 @@ package labyrinth;
 
 import java.awt.Canvas;
 import java.awt.Point;
+import java.util.Date;
 import java.util.Random;
 
 import game_entities.EndLevel;
+import game_entities.AbstractOverlappables;
 import game_entities.Monster_Phenix;
+import game_entities.MysteryBox;
 import game_entities.Player;
 import game_entities.Teleportation;
-import game_entities.Wall_damages;
-import game_entities.Wall_laby;
+import game_entities.blocker.Wall_damages;
+import game_entities.blocker.Wall_laby;
 import game_entities.Carapace;
 import game_entities.Fireball;
 import game_entities.Life;
@@ -36,8 +39,6 @@ import laby.game.PlayerOverlapRules;
 
 public class FirstLevel extends GameLevelDefaultImpl {
 	private Canvas canvas ;
-	private int count = 8;
-	private ObservableValue<Fireball> monstersObservable[] = new ObservableValue[count];
 
 	public FirstLevel(Game g) {
 		super(g);
@@ -46,7 +47,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 	
 	static int[][] tab = { 
 		    { 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 4, 1},
+		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 1},
 		    { 1, 0, 2, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 0, 1, 1, 1, 1, 1, 2, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
@@ -54,11 +55,11 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		    { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0 , 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1},
-		    { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2 , 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
+		    { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 8, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2 , 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 , 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
-		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		    { 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 			{ 1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{ 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -83,11 +84,11 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		
 		
 		PlayerOverlapRules overlapRules = new PlayerOverlapRules(new Point(1 * SPRITE_SIZE, 1 * SPRITE_SIZE),
-				new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE), life[0], score[0], endOfGame);
+				new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE), life[0], score[0], endOfGame, canvas);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
-		moveBlockerChecker.setMoveBlockerRules(new PlayerMoveBlocker(life[0],universe));
+		moveBlockerChecker.setMoveBlockerRules(new PlayerMoveBlocker(life[0],universe,canvas, moveBlockerChecker));
 		overlapRules.setUniverse(universe);
 
 		gameBoard = new LabyUniverseViewPort(canvas, universe);
@@ -102,9 +103,10 @@ public class FirstLevel extends GameLevelDefaultImpl {
 					if (tab[i][j] == 2) {
 						    universe.addGameEntity(new Wall_damages(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
-					
 					if (tab[i][j] == 3) {
-					    universe.addGameEntity(new EndLevel(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+						AbstractOverlappables end = new EndLevel(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE);
+					    universe.addGameEntity( end );
+					    
 					}
 					if (tab[i][j] == 4) {
 					    universe.addGameEntity(new Life(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
@@ -132,7 +134,17 @@ public class FirstLevel extends GameLevelDefaultImpl {
 					    universe.addGameEntity(Dragon);
 					}
 					if (tab[i][j] == 7) {
-					    universe.addGameEntity(new Carapace(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					    GameMovableDriverDefaultImpl carapaceDriver = new MonstersDriver();
+						carapaceDriver.setmoveBlockerChecker(moveBlockerChecker);
+						Carapace cara = new Carapace(canvas);
+						cara.setPosition(new Point(j * SPRITE_SIZE, i * SPRITE_SIZE));
+						cara.setDriver(carapaceDriver);
+						universe.addGameEntity(cara);
+					}
+					
+					if (tab[i][j] == 8) {
+					    universe.addGameEntity(new MysteryBox(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					    System.out.println(j + ":" + i);
 					}
 					
 				}
@@ -159,21 +171,19 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		player.setPosition(new Point(2 * SPRITE_SIZE, 0 * SPRITE_SIZE));
 		universe.addGameEntity(player);
 		
-		for ( int x = 0 ; x <count ; ++x){
-
-			monstersObservable[x] =  new ObservableValue<Fireball>(new Fireball(canvas));
-			GameEntity sonics = monstersObservable[x].getValue();
-			GameMovableDriverDefaultImpl ghostDriv = new BallMovableDriver(monstersObservable);
+		for ( int x = 0 ; x <8 ; ++x){
+			GameEntity sonics =  new Fireball(canvas);
+			GameMovableDriverDefaultImpl ghostDriv = new BallMovableDriver();
 			BallStrategy ranStr = new BallStrategy(1,-1,10);
 			ghostDriv.setStrategy(ranStr);
 			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
 			((GameMovable) sonics).setDriver(ghostDriv);
 			Random randx = new Random();
-			int monster_x = randx.nextInt(10) + 28;
+			int monster_x = randx.nextInt(14) + 28;
 			int monster_y = randx.nextInt(7) + 14;
 			((GameMovable) sonics).setPosition(new Point(monster_x * SPRITE_SIZE, monster_y * SPRITE_SIZE));
 			universe.addGameEntity(sonics);
 		}
-	}	
+	}
 }
 

@@ -98,7 +98,6 @@ public class LabyGame implements Game, Observer  {
 
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				start();
 			}
 		});
@@ -162,7 +161,7 @@ public class LabyGame implements Game, Observer  {
 		score[0].addObserver(this);
 		life[0].addObserver(this);
 		life[0].setValue(3);
-		score[0].setValue(0);
+		score[0].setValue(100);
 		levelNumber = 0;
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
@@ -170,7 +169,7 @@ public class LabyGame implements Game, Observer  {
 			try {
 				if (currentPlayedLevel != null && currentPlayedLevel.isAlive()) {
 					currentPlayedLevel.interrupt();
-					currentPlayedLevel = null;
+					currentPlayedLevel.end();
 				}
 				currentPlayedLevel = (GameLevelDefaultImpl) level;
 				levelNumber++;

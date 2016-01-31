@@ -17,7 +17,7 @@ public class BallMovableDriver extends GameMovableDriverDefaultImpl {
 	private List<SpeedVector> listPossibleVector = new ArrayList<SpeedVector>();
 	private ObservableValue<Fireball>[] monstersObservable;
 	
-	public BallMovableDriver(ObservableValue<Fireball>[] monstersObservable) {
+	public BallMovableDriver() {
 		listPossibleVector.add(new SpeedVectorDefaultImpl(new Point(1, -1)));
 		listPossibleVector.add(new SpeedVectorDefaultImpl(new Point(1,  1)));
 		listPossibleVector.add(new SpeedVectorDefaultImpl(new Point(-1,-1)));
