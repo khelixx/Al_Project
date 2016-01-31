@@ -1,4 +1,4 @@
-package game_entities;
+package game_entities.blocker;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -13,8 +13,10 @@ import gameframework.game.MoveBlocker;
 public class Wall_damages extends Wall {
 	
 	public Wall_damages (Canvas defaultCanvas, int xx, int yy) {
-		super(defaultCanvas,xx,yy,"images/block.gif");
+		super(defaultCanvas,xx,yy);
 	}
-
-
+	
+	public String Image(){
+		return "images/block.gif";
+	}
 }

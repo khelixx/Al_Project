@@ -74,7 +74,6 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 				invicibleTimer--;
 			}
 		}
-		
 	}
 	/********************added fonctions ****************************/
 	public SpriteManager getSpriteManager(){

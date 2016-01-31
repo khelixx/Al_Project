@@ -1,41 +1,16 @@
 package game_entities;
 
 import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 
-import gameframework.base.Drawable;
-import gameframework.base.DrawableImage;
-import gameframework.base.Overlappable;
-import gameframework.game.GameEntity;
-
-public class Life implements Drawable, GameEntity, Overlappable {
-	protected static DrawableImage image = null;
-	int x, y;
-	public static final int RENDERING_SIZE = 40;
+public class Life extends AbstractOverlappables {
 
 	public Life (Canvas defaultCanvas, int xx, int yy) {
-		image = new DrawableImage("images/life.gif", defaultCanvas);
-		x = xx;
-		y = yy;
+		super(defaultCanvas,xx,yy);
 	}
-
-	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), x, y, RENDERING_SIZE, RENDERING_SIZE,
-				null);
-	}
-
-	public Point getPos() {
-		return (new Point(x, y));
-	}
-
-	public Rectangle getBoundingBox() {
-		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
-	}
-
+	
 	@Override
-	public Point getPosition() {
-		return (new Point(x, y));
+	public String image() {
+		return "images/life.gif";
 	}
+
 }

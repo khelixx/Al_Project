@@ -8,15 +8,17 @@ import java.awt.Rectangle;
 import gameframework.base.Drawable;
 import gameframework.base.DrawableImage;
 import gameframework.base.Overlappable;
+import gameframework.base.SpeedVectorDefaultImpl;
 import gameframework.game.GameEntity;
 
-public class EntitiesOverlappables  implements Drawable, GameEntity, Overlappable {
-	protected static DrawableImage image = null;
+public abstract class AbstractOverlappables  implements Drawable, GameEntity, Overlappable {
+	
+	protected DrawableImage image;
 	int x, y;
 	public static final int RENDERING_SIZE = 40;
 
-	public EntitiesOverlappables (Canvas defaultCanvas, int xx, int yy,  String image) {
-		this.image = new DrawableImage(image, defaultCanvas);
+	public AbstractOverlappables (Canvas defaultCanvas, int xx, int yy) {
+		image = new DrawableImage(image(), defaultCanvas);
 		x = xx;
 		y = yy;
 	}
@@ -38,4 +40,6 @@ public class EntitiesOverlappables  implements Drawable, GameEntity, Overlappabl
 	public Point getPosition() {
 		return (new Point(x, y));
 	}
+	
+	public abstract String image();
 }
