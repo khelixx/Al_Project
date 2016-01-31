@@ -10,10 +10,12 @@ import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public abstract class Wall implements Drawable, MoveBlocker, GameEntity {
+public abstract class Wall implements Drawable, MoveBlocker, GameEntity, Cloneable {
 	
 	protected DrawableImage image = null;
-	int x, y;
+	protected int x, y;
+	protected Canvas canvas;
+	
 	public static final int RENDERING_SIZE = 40;
 
 	public Wall(Canvas defaultCanvas, int xx, int yy) {
@@ -34,6 +36,10 @@ public abstract class Wall implements Drawable, MoveBlocker, GameEntity {
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
 	}
+	
+	public Wall clone() throws CloneNotSupportedException {
+        return (Wall)super.clone();
+    }
 	
 	public abstract String Image();
 }

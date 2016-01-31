@@ -2,7 +2,7 @@ package labyrinth;
 
 import gameframework.game.GameDefaultImpl;
 import gameframework.game.GameLevel;
-import laby.game.LabyGame;
+import labygame.LabyGame;
 
 import java.util.ArrayList;
 
