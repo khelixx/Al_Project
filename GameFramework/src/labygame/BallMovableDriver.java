@@ -1,4 +1,4 @@
-package laby.game;
+package labygame;
 
 import java.awt.Point;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package laby.game;
+package labygame;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;

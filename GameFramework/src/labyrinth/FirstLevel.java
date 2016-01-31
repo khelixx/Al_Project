@@ -2,22 +2,17 @@ package labyrinth;
 
 import java.awt.Canvas;
 import java.awt.Point;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.Random;
 
-import game_entities.EndLevel;
-import game_entities.AbstractOverlappables;
 import game_entities.Monster_Phenix;
-import game_entities.MysteryBox;
 import game_entities.Player;
-import game_entities.Teleportation;
+import game_entities.blocker.Wall;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
-import game_entities.Carapace;
+import game_entities.overlappableNoMovable.*;
 import game_entities.Fireball;
-import game_entities.Life;
 import game_entities.Monster_Dragon;
-import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameEntity;
@@ -29,17 +24,11 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
-import laby.game.BallMovableDriver;
-import laby.game.BallStrategy;
-import laby.game.KeyboardExtensionStrategy;
-import laby.game.LabyUniverseViewPort;
-import laby.game.MonstersDriver;
-import laby.game.PlayerMoveBlocker;
-import laby.game.PlayerOverlapRules;
+import labygame.*;
 
 public class FirstLevel extends GameLevelDefaultImpl {
 	private Canvas canvas ;
-
+	
 	public FirstLevel(Game g) {
 		super(g);
 		canvas = g.getCanvas();
@@ -83,8 +72,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
 		
 		
-		PlayerOverlapRules overlapRules = new PlayerOverlapRules(new Point(1 * SPRITE_SIZE, 1 * SPRITE_SIZE),
-				new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE), life[0], score[0], endOfGame, canvas);
+		PlayerOverlapRules overlapRules = new PlayerOverlapRules(life[0], score[0], endOfGame, canvas);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
@@ -101,6 +89,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 							universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
 					if (tab[i][j] == 2) {
+							
 						    universe.addGameEntity(new Wall_damages(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
 					if (tab[i][j] == 3) {

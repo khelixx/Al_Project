@@ -1,21 +1,23 @@
-package laby.game;
+package labygame;
 
 import java.awt.Canvas;
 import java.awt.Point;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Random;
 import java.util.Vector;
-import game_entities.EndLevel;
+
 import game_entities.Fireball;
-import game_entities.Life;
 import game_entities.Monster_Dragon;
 import game_entities.Monster_Phenix;
-import game_entities.MysteryBox;
 import game_entities.Player;
-import game_entities.Teleportation;
+import game_entities.blocker.Wall;
 import game_entities.blocker.Wall_damages;
-import game_entities.Carapace;
+import game_entities.blocker.Wall_laby;
+import game_entities.overlappableNoMovable.Carapace;
+import game_entities.overlappableNoMovable.EndLevel;
+import game_entities.overlappableNoMovable.Life;
+import game_entities.overlappableNoMovable.MysteryBox;
+import game_entities.overlappableNoMovable.Teleportation;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
 import gameframework.game.GameEntity;
@@ -32,10 +34,9 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	private final ObservableValue<Integer> score;
 	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
-	
 	private Canvas canvas;
 
-	public PlayerOverlapRules(Point pacPos, Point gPos,
+	public PlayerOverlapRules(
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
 			ObservableValue<Boolean> endOfGame, Canvas canvas) {
 		this.life = life;
@@ -91,7 +92,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void overlapRule(Player player, MysteryBox mystery){
 		
 		Random randx = new Random();
-		int present = randx.nextInt(1) + 1;
+		int present = randx.nextInt(2);
 		
 		if (present == 1){
 			universe.addGameEntity(new Life(canvas , 2 * SPRITE_SIZE, 0 * SPRITE_SIZE));
@@ -100,7 +101,16 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 			universe.addGameEntity(new Wall_damages(canvas , 11 * SPRITE_SIZE, 8 * SPRITE_SIZE));
 			universe.addGameEntity(new Wall_damages(canvas , 9 * SPRITE_SIZE, 8 * SPRITE_SIZE));
 		}
-		
+		else{
+			Iterator<GameEntity> li = universe.gameEntities();
+			while(li.hasNext()){
+				GameEntity obj = li.next();
+				if( obj instanceof Wall && ((Wall) obj).getPos().equals(new Point(28*SPRITE_SIZE, 5*SPRITE_SIZE))){
+					universe.removeGameEntity(obj);
+				}
+			}
+			universe.addGameEntity(new Wall_damages(canvas , 26 * SPRITE_SIZE, 5 * SPRITE_SIZE));
+		}
 		universe.removeGameEntity(mystery);
 	}
 

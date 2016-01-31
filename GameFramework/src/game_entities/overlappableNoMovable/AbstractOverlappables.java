@@ -1,4 +1,4 @@
-package game_entities;
+package game_entities.overlappableNoMovable;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
