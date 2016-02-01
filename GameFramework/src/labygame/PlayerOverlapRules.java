@@ -28,7 +28,6 @@ import gameframework.game.OverlapRulesApplierDefaultImpl;
 public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	
 	private static final int SPRITE_SIZE = 40;
-
 	protected GameUniverse universe;
 
 	private final ObservableValue<Integer> score;
@@ -117,5 +116,35 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void overlapRule(Player player, Life life){
 		this.life.setValue(this.life.getValue() + 1);
 		universe.removeGameEntity(life);
+	}
+	
+	public void overlapRule(Fireball ball, Fireball ball2){
+		
+		if (ball.getPosition().y < ball2.getPosition().y){
+			Random randx = new Random();
+			int direction = randx.nextInt(1);
+			
+			if (direction == 0){
+				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(1,-1, 10));
+				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(-1, 1, 10));
+			}
+			else{
+				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(-1,-1, 10));
+				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(1, 1, 10));
+			}
+		}
+		else{
+			Random randx = new Random();
+			int direction = randx.nextInt(1);
+			
+			if (direction == 0){
+				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(1,-1, 10));
+				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(-1, 1, 10));
+			}
+			else{
+				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(-1,-1, 10));
+				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(1, 1, 10));
+			}
+		}
 	}
 }

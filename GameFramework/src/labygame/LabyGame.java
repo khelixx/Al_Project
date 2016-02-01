@@ -169,7 +169,7 @@ public class LabyGame implements Game, Observer  {
 			try {
 				if (currentPlayedLevel != null && currentPlayedLevel.isAlive()) {
 					currentPlayedLevel.interrupt();
-					currentPlayedLevel.end();
+					currentPlayedLevel = null;
 				}
 				currentPlayedLevel = (GameLevelDefaultImpl) level;
 				levelNumber++;
