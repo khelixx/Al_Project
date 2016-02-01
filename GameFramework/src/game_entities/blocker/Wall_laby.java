@@ -12,10 +12,10 @@ import gameframework.game.MoveBlocker;
 
 public class Wall_laby extends Wall{
 	
-	public Wall_laby (Canvas defaultCanvas, int xx, int yy) {
-		super(defaultCanvas,xx,yy);
+	public Wall_laby(Canvas defaultCanvas, int x,int y) {
+		super(defaultCanvas, x, y);
 	}
-	
+
 	public String Image(){
 		return "images/block.gif";
 	}

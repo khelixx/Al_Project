@@ -12,11 +12,13 @@ import gameframework.game.MoveBlocker;
 
 public class Wall_damages extends Wall {
 	
-	public Wall_damages (Canvas defaultCanvas, int xx, int yy) {
-		super(defaultCanvas,xx,yy);
+	public Wall_damages(Canvas defaultCanvas, int x, int y) {
+		super(defaultCanvas, x,y);
+		// TODO Auto-generated constructor stub
 	}
-	
+
 	public String Image(){
 		return "images/block.gif";
 	}
+
 }
