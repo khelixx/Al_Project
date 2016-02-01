@@ -89,7 +89,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 							universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
 					if (tab[i][j] == 2) {
-							
+						
 						    universe.addGameEntity(new Wall_damages(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
 					if (tab[i][j] == 3) {
@@ -160,10 +160,10 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		player.setPosition(new Point(2 * SPRITE_SIZE, 0 * SPRITE_SIZE));
 		universe.addGameEntity(player);
 		
-		for ( int x = 0 ; x <8 ; ++x){
+		for ( int x = 0 ; x <6 ; ++x){
 			GameEntity sonics =  new Fireball(canvas);
 			GameMovableDriverDefaultImpl ghostDriv = new BallMovableDriver();
-			BallStrategy ranStr = new BallStrategy(1,-1,10);
+			BallStrategy ranStr = new BallStrategy(1,1,10);
 			ghostDriv.setStrategy(ranStr);
 			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
 			((GameMovable) sonics).setDriver(ghostDriv);
