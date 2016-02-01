@@ -4,7 +4,9 @@ import java.awt.Canvas;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
@@ -16,6 +18,7 @@ import game_entities.Player;
 import game_entities.blocker.Wall;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
+import game_entities.overlappableNoMovable.AbstractOverlappables;
 import game_entities.overlappableNoMovable.Carapace;
 import game_entities.overlappableNoMovable.EndLevel;
 import game_entities.overlappableNoMovable.Life;
@@ -23,6 +26,8 @@ import game_entities.overlappableNoMovable.MysteryBox;
 import game_entities.overlappableNoMovable.Teleportation;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
+import gameframework.base.SpeedVector;
+import gameframework.base.SpeedVectorDefaultImpl;
 import gameframework.game.GameEntity;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
@@ -79,44 +84,35 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Player player, EndLevel end){
+		Wall wall_laby = new Wall_laby(canvas,0,0);
+		
 		if (this.end == true){
 			this.endOfGame.setValue(true);
 		}
 		else{
 						
-			Iterator<GameEntity> li = universe.gameEntities();
-			while(li.hasNext()){
-				GameEntity obj = li.next();
-				if(!(obj instanceof Player)){
-					universe.removeGameEntity(obj);
-				}
-			}
-			
-			File file = new File("files/end_level");
-			Scanner scanner = null;
-			try {
-				scanner = new Scanner(file);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int[][] end_level = new int[23][47];
-			int value = 0;
-			while (scanner.hasNextInt()) {
-			end_level[value / 47 ][value % 47  ] =  scanner.nextInt();
-		    value ++;
-			}
-			
-			scanner.close();
+			int[][] end_level = level();
 			for (int i = 0; i < end_level.length; ++i) {
 					for (int j = 0; j < end_level[0].length; ++j) {
 						if (end_level[i][j] == 1) {
-							//universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+							 Wall wall = null;
+							    wall = wall_laby.clone();
+							    wall.setPosition(j * SPRITE_SIZE, i * SPRITE_SIZE);
+								universe.addGameEntity(wall);
 						}
-					}
+						if (end_level[i][j] == 2) {
+							AbstractOverlappables end_level_final = new EndLevel(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE);
+						    universe.addGameEntity( end_level_final );
+						}
+					}	
 			}
-		
+			Wall wall = wall_laby.clone();
+			
+			 wall.setPosition(47 * SPRITE_SIZE, 21 * SPRITE_SIZE);
+			 universe.addGameEntity(wall);
+			this.end = true;
 		}
+		
 	}
 	
 	public void overlapRule(Player player, Carapace carapace){
@@ -161,10 +157,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void overlapRule(Fireball ball, Fireball ball2){
 		
 		if (ball.getPosition().y < ball2.getPosition().y){
-			Random randx = new Random();
-			int direction = randx.nextInt(1);
-			
-			if (direction == 0){
+			if (ball.getSpeedVector() != new SpeedVectorDefaultImpl(new Point(1,-1))){
 				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(1,-1, 10));
 				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(-1, 1, 10));
 			}
@@ -173,11 +166,8 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(1, 1, 10));
 			}
 		}
-		else{
-			Random randx = new Random();
-			int direction = randx.nextInt(1);
-			
-			if (direction == 0){
+		else{			
+			if (ball2.getSpeedVector() != new SpeedVectorDefaultImpl(new Point(1,-1))){
 				((GameMovableDriverDefaultImpl)ball2.getDriver()).setStrategy(new BallStrategy(1,-1, 10));
 				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(-1, 1, 10));
 			}
@@ -186,5 +176,34 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 				((GameMovableDriverDefaultImpl)ball.getDriver()).setStrategy(new BallStrategy(1, 1, 10));
 			}
 		}
+	}
+	
+	public int[][] level(){
+		Iterator<GameEntity> li = universe.gameEntities();
+		while(li.hasNext()){
+			GameEntity obj = li.next();
+			if(!(obj instanceof Player)){
+				universe.removeGameEntity(obj);
+			}
+		}
+		
+		File file = new File("files/end_level");
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int[][] end_level = new int[23][47];
+		int value = 0;
+		while (scanner.hasNextInt()) {
+		end_level[value / 47 ][value % 47  ] =  scanner.nextInt();
+	    value ++;
+		}
+		
+		scanner.close();
+		
+		return end_level;
 	}
 }

@@ -67,5 +67,4 @@ public class Monster_Phenix extends GameMovable implements Drawable, GameEntity,
 	public SpriteManager getSpriteManager(){
 		return spriteManager;
 	}
-
 }

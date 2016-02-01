@@ -12,7 +12,7 @@ import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
 import gameframework.game.SpriteManagerDefaultImpl;
 
-public class Monster_Dragon extends GameMovable implements Drawable, GameEntity,Overlappable{
+public class Monster_Dragon extends GameMovable implements Drawable, GameEntity,Overlappable, Cloneable{
 
 	public static final int RENDERING_SIZE = 40;
 	protected final SpriteManager spriteManager;
@@ -67,4 +67,8 @@ public class Monster_Dragon extends GameMovable implements Drawable, GameEntity,
 	public SpriteManager getSpriteManager(){
 		return spriteManager;
 	}
+	
+	public Monster_Dragon clone() throws CloneNotSupportedException {
+        return (Monster_Dragon)super.clone();
+    }
 }
