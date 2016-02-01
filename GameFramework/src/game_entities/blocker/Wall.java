@@ -42,8 +42,16 @@ public abstract class Wall implements Drawable, MoveBlocker, GameEntity, Cloneab
 		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
 	}
 	
-	public Wall clone() throws CloneNotSupportedException {
-        return (Wall)super.clone();
+	public Wall clone(){
+		try 
+        {
+			Wall copy = (Wall)super.clone();
+            return copy;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            return null;
+        }
     }
 	
 	public abstract String Image();
