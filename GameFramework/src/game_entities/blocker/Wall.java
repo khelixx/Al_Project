@@ -18,7 +18,7 @@ public abstract class Wall implements Drawable, MoveBlocker, GameEntity, Cloneab
 	
 	public static final int RENDERING_SIZE = 40;
 
-	public Wall(Canvas defaultCanvas, int xx, int yy) {
+	public Wall(Canvas defaultCanvas,int xx, int yy) {
 		image = new DrawableImage(Image(), defaultCanvas);
 		x = xx;
 		y = yy;
@@ -31,6 +31,11 @@ public abstract class Wall implements Drawable, MoveBlocker, GameEntity, Cloneab
 
 	public Point getPos() {
 		return (new Point(x, y));
+	}
+	
+	public void setPosition(int x, int y){
+		this.x = x;
+		this.y = y;
 	}
 
 	public Rectangle getBoundingBox() {

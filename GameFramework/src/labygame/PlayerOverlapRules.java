@@ -2,8 +2,11 @@ package labygame;
 
 import java.awt.Canvas;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Vector;
 
 import game_entities.Fireball;
@@ -29,7 +32,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	
 	private static final int SPRITE_SIZE = 40;
 	protected GameUniverse universe;
-
+	private boolean end = false;
 	private final ObservableValue<Integer> score;
 	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
@@ -76,7 +79,44 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Player player, EndLevel end){
-		this.endOfGame.setValue(true);
+		if (this.end == true){
+			this.endOfGame.setValue(true);
+		}
+		else{
+						
+			Iterator<GameEntity> li = universe.gameEntities();
+			while(li.hasNext()){
+				GameEntity obj = li.next();
+				if(!(obj instanceof Player)){
+					universe.removeGameEntity(obj);
+				}
+			}
+			
+			File file = new File("files/end_level");
+			Scanner scanner = null;
+			try {
+				scanner = new Scanner(file);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int[][] end_level = new int[23][47];
+			int value = 0;
+			while (scanner.hasNextInt()) {
+			end_level[value / 47 ][value % 47  ] =  scanner.nextInt();
+		    value ++;
+			}
+			
+			scanner.close();
+			for (int i = 0; i < end_level.length; ++i) {
+					for (int j = 0; j < end_level[0].length; ++j) {
+						if (end_level[i][j] == 1) {
+							//universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+						}
+					}
+			}
+		
+		}
 	}
 	
 	public void overlapRule(Player player, Carapace carapace){

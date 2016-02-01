@@ -28,11 +28,11 @@ import labygame.*;
 
 public class FirstLevel extends GameLevelDefaultImpl {
 	private Canvas canvas ;
-	
 	public FirstLevel(Game g) {
 		super(g);
 		canvas = g.getCanvas();
 	}
+	
 	
 	static int[][] tab = { 
 		    { 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -60,6 +60,9 @@ public class FirstLevel extends GameLevelDefaultImpl {
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 			
 	};
+	
+
+
 
 	
 	public static final int SPRITE_SIZE = 40;
@@ -67,6 +70,9 @@ public class FirstLevel extends GameLevelDefaultImpl {
 	
 	@Override
 	protected void init() {
+		Wall wall_laby = new Wall_laby(canvas,0,0);
+		Wall wall_damages = new Wall_damages(canvas,0,0);
+		
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
@@ -86,11 +92,26 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		for (int i = 0; i < tab.length; ++i) {
 				for (int j = 0; j < tab[0].length; ++j) {
 					if (tab[i][j] == 1) {
-							universe.addGameEntity(new Wall_laby(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+						    Wall wall = null;
+							try {
+								wall = wall_laby.clone();
+							} catch (CloneNotSupportedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						    wall.setPosition(j * SPRITE_SIZE, i * SPRITE_SIZE);
+							universe.addGameEntity(wall);
 					}
 					if (tab[i][j] == 2) {
 						
-						    universe.addGameEntity(new Wall_damages(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+						Wall wall = null;
+						try {
+							wall = wall_damages.clone();
+						} catch (CloneNotSupportedException e) {
+							e.printStackTrace();
+						}
+					    wall.setPosition(j * SPRITE_SIZE, i * SPRITE_SIZE);
+						universe.addGameEntity(wall);
 					}
 					if (tab[i][j] == 3) {
 						AbstractOverlappables end = new EndLevel(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE);
@@ -133,7 +154,6 @@ public class FirstLevel extends GameLevelDefaultImpl {
 					
 					if (tab[i][j] == 8) {
 					    universe.addGameEntity(new MysteryBox(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
-					    System.out.println(j + ":" + i);
 					}
 					
 				}
@@ -148,7 +168,16 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		universe.addGameEntity(new Teleportation(canvas,new Point(13 * SPRITE_SIZE, 1 * SPRITE_SIZE),
 				new Point(29 * SPRITE_SIZE, 5 * SPRITE_SIZE)));
 		
-		universe.addGameEntity(new Wall_laby(canvas, 2 * SPRITE_SIZE, -1 * SPRITE_SIZE));
+		
+		Wall_laby wall = null;
+		try {
+			wall = (Wall_laby) wall_laby.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 wall.setPosition(2 * SPRITE_SIZE, -1 * SPRITE_SIZE);
+		 universe.addGameEntity(wall);
 
 		Player player = new Player(canvas);
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
