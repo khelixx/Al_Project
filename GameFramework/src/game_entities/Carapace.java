@@ -12,33 +12,34 @@ import gameframework.game.GameEntity;
 import gameframework.game.GameMovable;
 
 public class Carapace extends GameMovable implements Drawable, GameEntity, Overlappable {
-	
+
 	protected static DrawableImage image = null;
 	public static final int RENDERING_SIZE = 40;
 
-	public Carapace (Canvas defaultCanvas) {
+	public Carapace(Canvas defaultCanvas) {
 		image = new DrawableImage("images/carapace.gif", defaultCanvas);
 	}
 
 	public void draw(Graphics g) {
-		
-		g.drawImage(image.getImage(), (int)super.getPosition().getX(), (int)super.getPosition().getY(), RENDERING_SIZE, RENDERING_SIZE,
-				null);
+
+		g.drawImage(image.getImage(), (int) super.getPosition().getX(), (int) super.getPosition().getY(),
+				RENDERING_SIZE, RENDERING_SIZE, null);
 	}
 
 	public Rectangle getBoundingBox() {
-		return (new Rectangle((int)super.getPosition().getX(), (int)super.getPosition().getY(), RENDERING_SIZE, RENDERING_SIZE));
+		return (new Rectangle((int) super.getPosition().getX(), (int) super.getPosition().getY(), RENDERING_SIZE,
+				RENDERING_SIZE));
 	}
 
 	@Override
 	public Point getPosition() {
-		return (new Point((int)super.getPosition().getX(), (int)super.getPosition().getY()));
+		return (new Point((int) super.getPosition().getX(), (int) super.getPosition().getY()));
 	}
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
