@@ -5,26 +5,28 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import game_entities.blocker.Wall;
+import game_entities.blocker.WallAbstract;
 import gameframework.base.Drawable;
 import gameframework.base.Overlappable;
+import gameframework.base.SpeedVector;
+import gameframework.base.SpeedVectorDefaultImpl;
 import gameframework.game.GameEntity;
 import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
 import gameframework.game.SpriteManagerDefaultImpl;
 
-public abstract class Monster extends GameMovable implements Drawable, GameEntity,Overlappable, Cloneable{
+public abstract class MonsterAbstract extends GameMovable implements Drawable, GameEntity,Overlappable, Cloneable{
 
 	public static final int RENDERING_SIZE = 40;
-	protected final SpriteManager spriteManager;
+	protected SpriteManager spriteManager;
 	protected boolean movable = true;
+	protected final Canvas canvas;
 	
-	public Monster(Canvas canvas){
+	public MonsterAbstract(Canvas canvas){
+			this.canvas = canvas;
 			spriteManager = new SpriteManagerDefaultImpl(Image(),
 					canvas, RENDERING_SIZE, 4);
-			spriteManager.setTypes(
-					"down", "left",
-					"right","up");
+			spriteManager.setTypes("down", "left","right","up");
 	}
 
 
@@ -69,8 +71,22 @@ public abstract class Monster extends GameMovable implements Drawable, GameEntit
 		return spriteManager;
 	}
 	
-	public Monster clone() throws CloneNotSupportedException {
-        return (Monster)super.clone();
+	public MonsterAbstract clone(){
+		try 
+        {
+			MonsterAbstract copy = (MonsterAbstract)super.clone();
+			copy.setSpeedVector((SpeedVector) super.getSpeedVector().clone());
+			
+			spriteManager = new SpriteManagerDefaultImpl(Image(),
+					canvas, RENDERING_SIZE, 4);
+			spriteManager.setTypes("down", "left","right","up");
+			
+            return copy;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            return null;
+        }
     }
 	
 	public abstract String Image();

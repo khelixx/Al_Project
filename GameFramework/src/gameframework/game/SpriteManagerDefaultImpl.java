@@ -54,6 +54,7 @@ public class SpriteManagerDefaultImpl implements SpriteManager {
 		int sy1 = currentRow * spriteSize;
 		int sx2 = sx1 + spriteSize;
 		int sy2 = sy1 + spriteSize;
+		
 		g.drawImage(image.getImage(), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
 				null);
 	}

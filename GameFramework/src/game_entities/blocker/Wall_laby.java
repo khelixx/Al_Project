@@ -10,7 +10,7 @@ import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall_laby extends Wall{
+public class Wall_laby extends WallAbstract{
 	
 	public Wall_laby(Canvas defaultCanvas, int x,int y) {
 		super(defaultCanvas, x, y);

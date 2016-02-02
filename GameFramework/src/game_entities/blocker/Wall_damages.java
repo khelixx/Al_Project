@@ -10,7 +10,7 @@ import gameframework.base.DrawableImage;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall_damages extends Wall {
+public class Wall_damages extends WallAbstract {
 	
 	public Wall_damages(Canvas defaultCanvas, int x, int y) {
 		super(defaultCanvas, x,y);
