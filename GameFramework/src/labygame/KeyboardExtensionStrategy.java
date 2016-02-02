@@ -7,11 +7,9 @@ import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.SpeedVector;
 import gameframework.base.SpeedVectorDefaultImpl;
 
-public class KeyboardExtensionStrategy extends MoveStrategyKeyboard{
-	
-	private Boolean check = false;
-	protected SpeedVector speedVector = new SpeedVectorDefaultImpl(new Point(0,
-			0));
+public class KeyboardExtensionStrategy extends MoveStrategyKeyboard {
+
+	protected SpeedVector speedVector = new SpeedVectorDefaultImpl(new Point(0, 0));
 
 	public SpeedVector getSpeedVector() {
 		return speedVector;
@@ -39,4 +37,3 @@ public class KeyboardExtensionStrategy extends MoveStrategyKeyboard{
 		}
 	}
 }
-
