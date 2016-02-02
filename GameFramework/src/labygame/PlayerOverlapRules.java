@@ -14,6 +14,7 @@ import game_entities.blocker.Wall;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
 import game_entities.overlappableNoMovable.Carapace;
+import game_entities.overlappableNoMovable.CheckPoint;
 import game_entities.overlappableNoMovable.EndLevel;
 import game_entities.overlappableNoMovable.Life;
 import game_entities.overlappableNoMovable.MysteryBox;
@@ -49,6 +50,10 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		this.universe = universe;
 	}
 	
+	public GameUniverse getUniverse() {
+		return universe;
+	}
+
 	@Override
 	public void applyOverlapRules(Vector<Overlap> overlappables) {
 		super.applyOverlapRules(overlappables);
@@ -116,6 +121,12 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void overlapRule(Player player, Life life){
 		this.life.setValue(this.life.getValue() + 1);
 		universe.removeGameEntity(life);
+	}
+	
+	public void overlapRule(Player player, CheckPoint p){
+		System.out.println("Check point reached ");
+		
+		universe.removeGameEntity(p);
 	}
 	
 	public void overlapRule(Fireball ball, Fireball ball2){

@@ -25,9 +25,11 @@ import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import labygame.*;
+import labygame.memento.CareTaker;
 
 public class FirstLevel extends GameLevelDefaultImpl {
 	private Canvas canvas ;
+	private CareTaker c = new CareTaker();
 	
 	public FirstLevel(Game g) {
 		super(g);
@@ -37,7 +39,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 	static int[][] tab = { 
 		    { 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 		    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 1},
-		    { 1, 0, 2, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 0, 1, 1, 1, 1, 1, 2, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1},
+		    { 1, 9, 2, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 , 1, 0, 1, 1, 1, 1, 1, 2, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1 , 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
 		    { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1},
@@ -63,14 +65,23 @@ public class FirstLevel extends GameLevelDefaultImpl {
 
 	
 	public static final int SPRITE_SIZE = 40;
-		
 	
+	
+	public CareTaker getC() {
+		return c;
+	}
+
+
+	public void setC(CareTaker c) {
+		this.c = c;
+	}
+
+
 	@Override
 	protected void init() {
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
-		
 		
 		PlayerOverlapRules overlapRules = new PlayerOverlapRules(life[0], score[0], endOfGame, canvas);
 		overlapProcessor.setOverlapRules(overlapRules);
@@ -78,7 +89,8 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
 		moveBlockerChecker.setMoveBlockerRules(new PlayerMoveBlocker(life[0],universe,canvas, moveBlockerChecker));
 		overlapRules.setUniverse(universe);
-
+		
+		c.save(overlapRules);
 		gameBoard = new LabyUniverseViewPort(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
@@ -133,7 +145,9 @@ public class FirstLevel extends GameLevelDefaultImpl {
 					
 					if (tab[i][j] == 8) {
 					    universe.addGameEntity(new MysteryBox(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
-					    System.out.println(j + ":" + i);
+					}
+					if (tab[i][j] == 9) {
+					    universe.addGameEntity(new CheckPoint(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 					}
 					
 				}

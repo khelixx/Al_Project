@@ -19,6 +19,8 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import labygame.memento.CareTaker;
+import labyrinth.FirstLevel;
 import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
@@ -32,10 +34,12 @@ public class LabyGame implements Game, Observer  {
 	protected ObservableValue<Integer> life[] = new ObservableValue[1];
 	protected ObservableValue<Boolean> endOfGame = null;
 	
+	
 	private Frame f;
 
 	private GameLevelDefaultImpl currentPlayedLevel = null;
 	protected int levelNumber;
+	private CareTaker ctk ;
 
 	protected ArrayList<GameLevel> gameLevels;
 
@@ -45,7 +49,9 @@ public class LabyGame implements Game, Observer  {
 	protected Label lifeValue, scoreValue;
 	protected Label currentLevel;
 	protected Label currentLevelValue;
-
+	
+	
+	
 	public LabyGame() {
 		life[0] = new ObservableValue<Integer>(0);
         score[0] = new ObservableValue<Integer>(0);
@@ -89,6 +95,7 @@ public class LabyGame implements Game, Observer  {
 		MenuItem save = new MenuItem("save");
 		MenuItem restore = new MenuItem("load");
 		MenuItem quit = new MenuItem("quit");
+		MenuItem checkP= new MenuItem("check-point");
 		Menu game = new Menu("game");
 		MenuItem pause = new MenuItem("pause");
 		MenuItem resume = new MenuItem("resume");
@@ -96,6 +103,13 @@ public class LabyGame implements Game, Observer  {
 		menuBar.add(game);
 		f.setMenuBar(menuBar);
 
+		checkP.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				restore();
+			}
+		});
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				start();
@@ -131,6 +145,7 @@ public class LabyGame implements Game, Observer  {
 		file.add(save);
 		file.add(restore);
 		file.add(quit);
+		game.add(checkP);
 		game.add(pause);
 		game.add(resume);
 	}
@@ -171,6 +186,7 @@ public class LabyGame implements Game, Observer  {
 					currentPlayedLevel.interrupt();
 					currentPlayedLevel = null;
 				}
+				ctk = ((FirstLevel)currentPlayedLevel).getC();
 				currentPlayedLevel = (GameLevelDefaultImpl) level;
 				levelNumber++;
 				currentLevelValue.setText(Integer.toString(levelNumber));
@@ -182,11 +198,12 @@ public class LabyGame implements Game, Observer  {
 
 	}
 	public void restore() {
-		System.out.println("restore(): Unimplemented operation");
+		
 	}
 
 	public void save() {
-		System.out.println("save(): Unimplemented operation");
+		System.out.println(currentLevel.getLocation());
+//		new Memento(currentLevel.getLocation());
 	}
 
 	public void pause() {
@@ -242,5 +259,6 @@ public class LabyGame implements Game, Observer  {
 			}
 		}
 	}
+
 
 }
