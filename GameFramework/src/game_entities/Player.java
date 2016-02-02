@@ -4,9 +4,13 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import gameframework.base.Drawable;
 import gameframework.base.Overlappable;
+import gameframework.base.SpeedVectorDefaultImpl;
 import gameframework.game.GameEntity;
 import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
@@ -18,6 +22,8 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 	protected final SpriteManager spriteManager;
 	protected boolean movable = true;
 	private int invicibleTimer;
+	private int cursor = 0;
+	private List <String> type = Arrays.asList("right", "down", "left","up");
 	
 	public Player(Canvas canvas){
 			spriteManager = new SpriteManagerDefaultImpl("images/zelda.gif",
@@ -27,8 +33,8 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 					"up","down","static");
 	}
 	
-	public void setInvulnerable(int timer) {
-		invicibleTimer = timer;
+	public void setInvulnerable() {
+		invicibleTimer = 15;
 	}
 
 	public boolean isVulnerable() {
@@ -46,21 +52,28 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 	public void draw(Graphics g) {
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
-		getSpeedVector().setSpeed(10);
+		
 		movable = true;
 		
-		if (tmp.getX() == 1) {
-			spriteType += "right";
-		} else if (tmp.getX() == -1) {
-			spriteType += "left";
-		} else if (tmp.getY() == 1) {
-			spriteType += "down";
-		} else if (tmp.getY() == -1) {
-			spriteType += "up";
-		} else {
-			spriteType += "down";
-			spriteManager.reset();
-			movable = false;
+		if (!isVulnerable()) {
+			spriteType += spin();
+			cursor ++;
+		}
+		else{
+			getDriver().getSpeedVector(this).setSpeed(10);
+			if (tmp.getX() == 1) {
+				spriteType += "right";
+			} else if (tmp.getX() == -1) {
+				spriteType += "left";
+			} else if (tmp.getY() == 1) {
+				spriteType += "down";
+			} else if (tmp.getY() == -1) {
+				spriteType += "up";
+			} else {
+				spriteType += "down";
+				spriteManager.reset();
+				movable = false;
+			}
 		}
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
@@ -69,14 +82,22 @@ public class Player extends GameMovable implements Drawable, GameEntity,Overlapp
 	@Override
 	public void oneStepMoveAddedBehavior() {
 		if (movable) {
-			spriteManager.increment();
 			if (!isVulnerable()) {
 				invicibleTimer--;
+			}
+			else{
+				spriteManager.increment();
 			}
 		}
 	}
 	/********************added fonctions ****************************/
 	public SpriteManager getSpriteManager(){
 		return spriteManager;
+	}
+	
+	public String spin(){
+		spriteManager.reset();
+		getDriver().getSpeedVector(this).setSpeed(0);
+		return type.get(cursor % type.size());
 	}
 }

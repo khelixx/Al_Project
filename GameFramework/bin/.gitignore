@@ -1,4 +1,5 @@
-/end_level
+/game_entities/
+/gameframework/
 /labygame/
 /labyrinth/
-/game_entities/
+/pacman/

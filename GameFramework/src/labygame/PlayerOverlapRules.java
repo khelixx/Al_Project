@@ -11,15 +11,15 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
+import game_entities.Carapace;
 import game_entities.Fireball;
 import game_entities.Monster_Dragon;
 import game_entities.Monster_Phenix;
 import game_entities.Player;
-import game_entities.blocker.Wall;
+import game_entities.blocker.WallAbstract;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
 import game_entities.overlappableNoMovable.AbstractOverlappables;
-import game_entities.overlappableNoMovable.Carapace;
 import game_entities.overlappableNoMovable.EndLevel;
 import game_entities.overlappableNoMovable.Life;
 import game_entities.overlappableNoMovable.MysteryBox;
@@ -71,20 +71,25 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void overlapRule(Player player, Monster_Phenix monster){
 		if (player.isVulnerable()){
 			this.life.setValue(this.life.getValue() - 1);
-			player.setInvulnerable(20);
+			player.setInvulnerable();
 		}		
 	}
 	
 	public void overlapRule(Player player, Monster_Dragon monster){
-		this.life.setValue(0);
+		if (player.isVulnerable()){
+			this.life.setValue(0);
+		}
 	}
 
 	public void overlapRule(Player player, Fireball ball){
-		this.life.setValue(this.life.getValue() - 1);
+		if (player.isVulnerable()){
+			this.life.setValue(this.life.getValue() - 1);
+			player.setInvulnerable();
+		}	
 	}
 	
 	public void overlapRule(Player player, EndLevel end){
-		Wall wall_laby = new Wall_laby(canvas,0,0);
+		WallAbstract wall_laby = new Wall_laby(canvas,0,0);
 		
 		if (this.end == true){
 			this.endOfGame.setValue(true);
@@ -95,7 +100,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 			for (int i = 0; i < end_level.length; ++i) {
 					for (int j = 0; j < end_level[0].length; ++j) {
 						if (end_level[i][j] == 1) {
-							 Wall wall = null;
+							 WallAbstract wall = null;
 							    wall = wall_laby.clone();
 							    wall.setPosition(j * SPRITE_SIZE, i * SPRITE_SIZE);
 								universe.addGameEntity(wall);
@@ -106,7 +111,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 						}
 					}	
 			}
-			Wall wall = wall_laby.clone();
+			WallAbstract wall = wall_laby.clone();
 			
 			 wall.setPosition(47 * SPRITE_SIZE, 21 * SPRITE_SIZE);
 			 universe.addGameEntity(wall);
@@ -140,7 +145,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 			Iterator<GameEntity> li = universe.gameEntities();
 			while(li.hasNext()){
 				GameEntity obj = li.next();
-				if( obj instanceof Wall && ((Wall) obj).getPos().equals(new Point(28*SPRITE_SIZE, 5*SPRITE_SIZE))){
+				if( obj instanceof WallAbstract && ((WallAbstract) obj).getPos().equals(new Point(28*SPRITE_SIZE, 5*SPRITE_SIZE))){
 					universe.removeGameEntity(obj);
 				}
 			}
