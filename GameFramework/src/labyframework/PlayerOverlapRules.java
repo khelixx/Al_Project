@@ -77,7 +77,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 				player.setInvulnerable();
 			} else {
 				player.setPosition(restore().getPosition());
-				player.setSpeedVector(restore().getSpeedVector());
+				player.getSpriteManager().setType("static");
 			}
 		}
 	}
@@ -86,7 +86,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		if (player.isVulnerable()) {
 			this.life.setValue(1);
 			player.setPosition(restore().getPosition());
-			player.setSpeedVector(restore().getSpeedVector());
+			player.getSpriteManager().setType("static");
 		}
 	}
 
@@ -97,7 +97,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 				player.setInvulnerable();
 			} else {
 				player.setPosition(restore().getPosition());
-				player.setSpeedVector(restore().getSpeedVector());
+				player.getSpriteManager().setType("static");
 			}
 		}
 	}
