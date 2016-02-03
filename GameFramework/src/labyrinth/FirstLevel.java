@@ -40,7 +40,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 	private Canvas canvas;
 	private Creator creator = new Creator();
     private Guardian guardian = new Guardian();
-
+    Player player ;
 	public FirstLevel(Game g) {
 		super(g);
 		canvas = g.getCanvas();
@@ -174,8 +174,8 @@ public class FirstLevel extends GameLevelDefaultImpl {
 		WallAbstract wall = wall_laby.clone();
 		wall.setPosition(2 * SPRITE_SIZE, -1 * SPRITE_SIZE);
 		universe.addGameEntity(wall);
-
-		Player player = new Player(canvas);
+		
+		player = new Player(canvas);
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		KeyboardExtensionStrategy keyStr = new KeyboardExtensionStrategy();
 		pacDriver.setStrategy(keyStr);
@@ -201,5 +201,16 @@ public class FirstLevel extends GameLevelDefaultImpl {
 	
 		creator.setState(player.clone());
 		guardian.add(creator.saveStateToMemento());
+	}
+
+	public int getGuardian() {
+		return guardian.size();
+	}
+
+	public void setGuardian(int checkPointValue) {
+		super.life[0].setValue(3);
+		super.score[0].setValue(100);
+		player.setPosition(creator.getStateFromMemento(guardian.get(checkPointValue)).getPosition());
+		player.setSpeedVector(creator.getStateFromMemento(guardian.get(checkPointValue)).getSpeedVector());
 	}
 }

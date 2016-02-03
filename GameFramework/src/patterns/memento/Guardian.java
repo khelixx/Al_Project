@@ -20,4 +20,8 @@ public class Guardian {
 	public Memento getFirst(){
 		return mementoList.getFirst();
 	}
+	
+	public int size(){
+		return mementoList.size();
+	}
 }

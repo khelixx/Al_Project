@@ -22,6 +22,8 @@ import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameLevel;
 import gameframework.game.GameLevelDefaultImpl;
+import labyrinth.FirstLevel;
+import patterns.memento.Guardian;
 
 public class LabyGame implements Game, Observer {
 
@@ -187,6 +189,7 @@ public class LabyGame implements Game, Observer {
 				levelNumber++;
 				currentLevelValue.setText(Integer.toString(levelNumber));
 				currentPlayedLevel.start();
+				checkPointValue = ((FirstLevel)currentPlayedLevel).getGuardian();
 				currentPlayedLevel.join();
 			} catch (Exception e) {
 			}
@@ -195,7 +198,7 @@ public class LabyGame implements Game, Observer {
 	}
 
 	public void restore() {
-		
+		((FirstLevel)currentPlayedLevel).setGuardian(checkPointValue);
 	}
 
 	public void save() {
