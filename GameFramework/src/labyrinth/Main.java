@@ -1,6 +1,5 @@
 package labyrinth;
 
-import gameframework.game.GameDefaultImpl;
 import gameframework.game.GameLevel;
 import labygame.LabyGame;
 

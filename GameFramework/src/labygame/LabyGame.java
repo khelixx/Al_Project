@@ -26,15 +26,16 @@ import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameLevel;
 import gameframework.game.GameLevelDefaultImpl;
+import patterns.memento.Creator;
+import patterns.memento.Guardian;
 
-public class LabyGame implements Game, Observer  {
+public class LabyGame implements Game, Observer {
 
 	protected CanvasDefaultImpl defaultCanvas = null;
 	protected ObservableValue<Integer> score[] = new ObservableValue[1];
 	protected ObservableValue<Integer> life[] = new ObservableValue[1];
 	protected ObservableValue<Boolean> endOfGame = null;
-	
-	
+
 	private Frame f;
 
 	private GameLevelDefaultImpl currentPlayedLevel = null;
@@ -49,13 +50,11 @@ public class LabyGame implements Game, Observer  {
 	protected Label lifeValue, scoreValue;
 	protected Label currentLevel;
 	protected Label currentLevelValue;
-	
-	
-	
+
 	public LabyGame() {
 		life[0] = new ObservableValue<Integer>(0);
-        score[0] = new ObservableValue<Integer>(0);
-		
+		score[0] = new ObservableValue<Integer>(0);
+
 		lifeText = new Label("Lives:");
 		scoreText = new Label("Score:");
 		information = new Label("State:");
@@ -87,7 +86,7 @@ public class LabyGame implements Game, Observer  {
 			}
 		});
 	}
-	
+
 	private void createMenuBar() {
 		MenuBar menuBar = new MenuBar();
 		Menu file = new Menu("file");
@@ -149,7 +148,7 @@ public class LabyGame implements Game, Observer  {
 		game.add(pause);
 		game.add(resume);
 	}
-	
+
 	private Container createStatusBar() {
 		JPanel c = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
@@ -197,6 +196,7 @@ public class LabyGame implements Game, Observer  {
 		}
 
 	}
+
 	public void restore() {
 		
 	}
@@ -251,10 +251,7 @@ public class LabyGame implements Game, Observer  {
 			}
 			for (ObservableValue<Integer> scoreObservable : score) {
 				if (o == scoreObservable) {
-					scoreValue
-							.setText(Integer
-									.toString(((ObservableValue<Integer>) o)
-											.getValue()));
+					scoreValue.setText(Integer.toString(((ObservableValue<Integer>) o).getValue()));
 				}
 			}
 		}
