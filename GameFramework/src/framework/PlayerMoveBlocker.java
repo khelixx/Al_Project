@@ -2,8 +2,6 @@ package framework;
 
 import java.awt.Canvas;
 import java.awt.Point;
-
-import game_entities.*;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
 import game_entities.movable.Carapace;

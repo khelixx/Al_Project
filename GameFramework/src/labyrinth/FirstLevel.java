@@ -2,11 +2,7 @@ package labyrinth;
 
 import java.awt.Canvas;
 import java.awt.Point;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-
 import framework.*;
 import game_entities.blocker.WallAbstract;
 import game_entities.blocker.Wall_damages;
@@ -17,7 +13,6 @@ import game_entities.EndLevel;
 import game_entities.Life;
 import game_entities.MysteryBox;
 import game_entities.Teleportation;
-import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameEntity;
@@ -31,7 +26,6 @@ import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import patterns.memento.Creator;
 import patterns.memento.Guardian;
-import sun.font.CreatedFontTracker;
 
 public class FirstLevel extends GameLevelDefaultImpl {
 	private Canvas canvas;

@@ -24,8 +24,6 @@ import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameLevel;
 import gameframework.game.GameLevelDefaultImpl;
-import patterns.memento.Creator;
-import patterns.memento.Guardian;
 
 public class LabyGame implements Game, Observer {
 

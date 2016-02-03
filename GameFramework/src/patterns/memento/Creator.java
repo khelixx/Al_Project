@@ -1,7 +1,5 @@
 package patterns.memento;
 
-import java.awt.Point;
-
 import game_entities.movable.Player;
 
 public class Creator {

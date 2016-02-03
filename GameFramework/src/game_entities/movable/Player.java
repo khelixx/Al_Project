@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import gameframework.base.Drawable;
 import gameframework.base.Overlappable;
-import gameframework.base.SpeedVector;
 import gameframework.game.GameEntity;
 import gameframework.game.GameMovable;
 import gameframework.game.SpriteManager;
