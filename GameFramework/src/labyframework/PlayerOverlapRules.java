@@ -1,4 +1,4 @@
-package labygame;
+package labyframework;
 
 import java.awt.Canvas;
 import java.awt.Point;
@@ -8,24 +8,20 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
-import game_entities.Carapace;
-import game_entities.Fireball;
-import game_entities.MonsterDragon;
-import game_entities.MonsterPhenix;
-import game_entities.Player;
+import game_entities.AbstractOverlappables;
+import game_entities.CheckPoint;
+import game_entities.EndLevel;
+import game_entities.Life;
+import game_entities.MysteryBox;
+import game_entities.Teleportation;
 import game_entities.blocker.WallAbstract;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
-<<<<<<< HEAD
-import game_entities.overlappableNoMovable.Carapace;
-import game_entities.overlappableNoMovable.CheckPoint;
-=======
-import game_entities.overlappableNoMovable.AbstractOverlappables;
->>>>>>> origin/master
-import game_entities.overlappableNoMovable.EndLevel;
-import game_entities.overlappableNoMovable.Life;
-import game_entities.overlappableNoMovable.MysteryBox;
-import game_entities.overlappableNoMovable.Teleportation;
+import game_entities.movable.Carapace;
+import game_entities.movable.Fireball;
+import game_entities.movable.MonsterDragon;
+import game_entities.movable.MonsterPhenix;
+import game_entities.movable.Player;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
 import gameframework.base.SpeedVectorDefaultImpl;
@@ -46,7 +42,7 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	private final ObservableValue<Boolean> endOfGame;
 	private Canvas canvas;
 	Creator creator;
-    Guardian guardian;
+	Guardian guardian;
 
 	public PlayerOverlapRules(ObservableValue<Integer> life, ObservableValue<Integer> score,
 			ObservableValue<Boolean> endOfGame, Canvas canvas, Creator creator, Guardian guardian) {
@@ -62,9 +58,6 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}
-	public GameUniverse getUniverse() {
-		return universe;
-	}
 
 	@Override
 	public void applyOverlapRules(Vector<Overlap> overlappables) {
@@ -75,17 +68,14 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		player.setPosition(start.getDestination());
 		player.getSpriteManager().setType("static");
 		universe.removeGameEntity(start);
-		creator.setState(player.clone());
-		guardian.add(creator.saveStateToMemento());
 	}
 
 	public void overlapRule(Player player, MonsterPhenix monster) {
 		if (player.isVulnerable()) {
-			if(this.life.getValue() != 1){
+			if (this.life.getValue() != 1) {
 				this.life.setValue(this.life.getValue() - 1);
 				player.setInvulnerable();
-			}
-			else{
+			} else {
 				player.setPosition(restore().getPosition());
 				player.setSpeedVector(restore().getSpeedVector());
 			}
@@ -95,18 +85,17 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void overlapRule(Player player, MonsterDragon monster) {
 		if (player.isVulnerable()) {
 			this.life.setValue(1);
-				player.setPosition(restore().getPosition());
-				player.setSpeedVector(restore().getSpeedVector());
+			player.setPosition(restore().getPosition());
+			player.setSpeedVector(restore().getSpeedVector());
 		}
 	}
 
 	public void overlapRule(Player player, Fireball ball) {
 		if (player.isVulnerable()) {
-			if(this.life.getValue() != 1){
+			if (this.life.getValue() != 1) {
 				this.life.setValue(this.life.getValue() - 1);
 				player.setInvulnerable();
-			}
-			else{
+			} else {
 				player.setPosition(restore().getPosition());
 				player.setSpeedVector(restore().getSpeedVector());
 			}
@@ -136,7 +125,6 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 				}
 			}
 			WallAbstract wall = wall_laby.clone();
-
 			wall.setPosition(47 * SPRITE_SIZE, 21 * SPRITE_SIZE);
 			universe.addGameEntity(wall);
 			this.end = true;
@@ -186,7 +174,8 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 
 	public void overlapRule(Player player, CheckPoint p){
 		System.out.println("Check point reached ");
-		
+		creator.setState(player.clone());
+		guardian.add(creator.saveStateToMemento());
 		universe.removeGameEntity(p);
 	}
 	
@@ -235,14 +224,13 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 			end_level[value / 47][value % 47] = scanner.nextInt();
 			value++;
 		}
-
 		scanner.close();
-
 		return end_level;
 	}
-	
-	public Player restore(){
+
+	public Player restore() {
 		this.life.setValue(3);
-		return creator.getStateFromMemento(guardian.getFirst());
+		this.score.setValue(90);
+		return creator.getStateFromMemento(guardian.getLast());
 	}
 }

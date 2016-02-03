@@ -1,4 +1,4 @@
-package labygame;
+package labyframework;
 
 import java.awt.Point;
 

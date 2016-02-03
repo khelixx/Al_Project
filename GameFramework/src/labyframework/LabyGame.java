@@ -1,4 +1,4 @@
-package labygame;
+package labyframework;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -16,18 +16,12 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.JPanel;
-
-import labygame.memento.CareTaker;
-import labyrinth.FirstLevel;
 import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameLevel;
 import gameframework.game.GameLevelDefaultImpl;
-import patterns.memento.Creator;
-import patterns.memento.Guardian;
 
 public class LabyGame implements Game, Observer {
 
@@ -35,12 +29,10 @@ public class LabyGame implements Game, Observer {
 	protected ObservableValue<Integer> score[] = new ObservableValue[1];
 	protected ObservableValue<Integer> life[] = new ObservableValue[1];
 	protected ObservableValue<Boolean> endOfGame = null;
-
+	protected int checkPointValue;
 	private Frame f;
-
 	private GameLevelDefaultImpl currentPlayedLevel = null;
 	protected int levelNumber;
-	private CareTaker ctk ;
 
 	protected ArrayList<GameLevel> gameLevels;
 
@@ -50,13 +42,15 @@ public class LabyGame implements Game, Observer {
 	protected Label lifeValue, scoreValue;
 	protected Label currentLevel;
 	protected Label currentLevelValue;
+	protected Label checkPoint, checkPointTxt;
 
 	public LabyGame() {
 		life[0] = new ObservableValue<Integer>(0);
 		score[0] = new ObservableValue<Integer>(0);
-
+		checkPointValue = 0;
 		lifeText = new Label("Lives:");
 		scoreText = new Label("Score:");
+		checkPoint = new Label("checkPoint:");
 		information = new Label("State:");
 		informationValue = new Label("Playing");
 		currentLevel = new Label("Level:");
@@ -155,11 +149,14 @@ public class LabyGame implements Game, Observer {
 		c.setLayout(layout);
 		lifeValue = new Label(Integer.toString(life[0].getValue()));
 		scoreValue = new Label(Integer.toString(score[0].getValue()));
+		checkPointTxt = new Label(Integer.toString(checkPointValue));
 		currentLevelValue = new Label(Integer.toString(levelNumber));
 		c.add(lifeText);
 		c.add(lifeValue);
 		c.add(scoreText);
 		c.add(scoreValue);
+		c.add(checkPoint);
+		c.add(checkPointTxt);
 		c.add(currentLevel);
 		c.add(currentLevelValue);
 		c.add(information);
@@ -175,7 +172,8 @@ public class LabyGame implements Game, Observer {
 		score[0].addObserver(this);
 		life[0].addObserver(this);
 		life[0].setValue(3);
-		score[0].setValue(100);
+		score[0].setValue(90);
+		checkPointValue = 0;
 		levelNumber = 0;
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
@@ -185,7 +183,6 @@ public class LabyGame implements Game, Observer {
 					currentPlayedLevel.interrupt();
 					currentPlayedLevel = null;
 				}
-				ctk = ((FirstLevel)currentPlayedLevel).getC();
 				currentPlayedLevel = (GameLevelDefaultImpl) level;
 				levelNumber++;
 				currentLevelValue.setText(Integer.toString(levelNumber));
@@ -203,7 +200,6 @@ public class LabyGame implements Game, Observer {
 
 	public void save() {
 		System.out.println(currentLevel.getLocation());
-//		new Memento(currentLevel.getLocation());
 	}
 
 	public void pause() {

@@ -1,13 +1,13 @@
 package patterns.memento;
 
-import game_entities.Player;
+import game_entities.movable.Player;
 
 public class Creator {
 	
 	   private Player state;
 
 	   public void setState(Player player){
-	      this.state = player;
+	      this.state = player.clone();
 	   }
 
 	   public Player getState(){
