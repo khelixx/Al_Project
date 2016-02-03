@@ -1,11 +1,9 @@
 package labyrinth;
 
 import gameframework.game.GameLevel;
-
+import labyframework.LabyGame;
 
 import java.util.ArrayList;
-
-import framework.LabyGame;
 
 public class Main {
 	public static void main(String[] args) {

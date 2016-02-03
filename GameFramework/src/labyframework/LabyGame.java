@@ -1,4 +1,4 @@
-package framework;
+package labyframework;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;

@@ -3,13 +3,7 @@ package labyrinth;
 import java.awt.Canvas;
 import java.awt.Point;
 import java.util.Random;
-import framework.BallMovableDriver;
-import framework.BallStrategy;
-import framework.KeyboardExtensionStrategy;
-import framework.LabyUniverseViewPort;
-import framework.MonstersDriver;
-import framework.PlayerMoveBlocker;
-import framework.PlayerOverlapRules;
+
 import patterns.memento.Creator;
 import patterns.memento.Guardian;
 import game_entities.blocker.WallAbstract;
@@ -33,6 +27,13 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
+import labyframework.BallMovableDriver;
+import labyframework.BallStrategy;
+import labyframework.KeyboardExtensionStrategy;
+import labyframework.LabyUniverseViewPort;
+import labyframework.MonstersDriver;
+import labyframework.PlayerMoveBlocker;
+import labyframework.PlayerOverlapRules;
 
 
 public class FirstLevel extends GameLevelDefaultImpl {
@@ -198,7 +199,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 			universe.addGameEntity(fireball);
 		}
 	
-		creator.setState(player);
+		creator.setState(player.clone());
 		guardian.add(creator.saveStateToMemento());
 	}
 }
