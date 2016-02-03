@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
-
 import game_entities.AbstractOverlappables;
+import game_entities.CheckPoint;
 import game_entities.EndLevel;
 import game_entities.Life;
 import game_entities.MysteryBox;
@@ -68,8 +68,6 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		player.setPosition(start.getDestination());
 		player.getSpriteManager().setType("static");
 		universe.removeGameEntity(start);
-		creator.setState(player.clone());
-		guardian.add(creator.saveStateToMemento());
 	}
 
 	public void overlapRule(Player player, MonsterPhenix monster) {
@@ -174,6 +172,14 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 		universe.removeGameEntity(life);
 	}
 
+	public void overlapRule(Player player, CheckPoint p){
+		System.out.println("Check point reached ");
+		creator.setState(player.clone());
+		guardian.add(creator.saveStateToMemento());
+		universe.removeGameEntity(p);
+	}
+	
+
 	public void overlapRule(Fireball ball, Fireball ball2) {
 
 		if (ball.getPosition().y < ball2.getPosition().y) {
@@ -225,6 +231,6 @@ public class PlayerOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public Player restore() {
 		this.life.setValue(3);
 		this.score.setValue(90);
-		return creator.getStateFromMemento(guardian.getFirst());
+		return creator.getStateFromMemento(guardian.getLast());
 	}
 }
