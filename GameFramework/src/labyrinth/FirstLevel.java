@@ -7,16 +7,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import game_entities.MonsterPhenix;
-import game_entities.Player;
+import framework.*;
 import game_entities.blocker.WallAbstract;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
-import game_entities.overlappableNoMovable.*;
-import game_entities.Carapace;
-import game_entities.Fireball;
-import game_entities.MonsterAbstract;
-import game_entities.MonsterDragon;
+import game_entities.movable.*;
+import game_entities.AbstractOverlappables;
+import game_entities.EndLevel;
+import game_entities.Life;
+import game_entities.MysteryBox;
+import game_entities.Teleportation;
 import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
@@ -29,7 +29,6 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
-import labygame.*;
 import patterns.memento.Creator;
 import patterns.memento.Guardian;
 import sun.font.CreatedFontTracker;
@@ -194,7 +193,7 @@ public class FirstLevel extends GameLevelDefaultImpl {
 			universe.addGameEntity(fireball);
 		}
 	
-		creator.setState(player.clone());
+		creator.setState(player);
 		guardian.add(creator.saveStateToMemento());
 	}
 }

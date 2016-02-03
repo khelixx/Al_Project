@@ -1,11 +1,11 @@
-package labygame;
+package framework;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import game_entities.Fireball;
+import game_entities.movable.Fireball;
 import gameframework.base.Movable;
 import gameframework.base.ObservableValue;
 import gameframework.base.SpeedVector;

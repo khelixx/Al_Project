@@ -1,4 +1,4 @@
-package labygame;
+package framework;
 
 import java.awt.Canvas;
 import gameframework.game.GameUniverse;

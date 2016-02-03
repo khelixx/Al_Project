@@ -1,4 +1,4 @@
-package labygame;
+package framework;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;

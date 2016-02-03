@@ -1,6 +1,6 @@
 package patterns.memento;
 
-import game_entities.Player;
+import game_entities.movable.Player;
 
 public class Memento {
 

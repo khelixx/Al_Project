@@ -1,4 +1,4 @@
-package labygame;
+package framework;
 
 import java.awt.Canvas;
 import java.awt.Point;
@@ -6,6 +6,8 @@ import java.awt.Point;
 import game_entities.*;
 import game_entities.blocker.Wall_damages;
 import game_entities.blocker.Wall_laby;
+import game_entities.movable.Carapace;
+import game_entities.movable.Player;
 import gameframework.base.ObservableValue;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;

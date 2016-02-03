@@ -1,4 +1,4 @@
-package labygame;
+package framework;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -163,7 +163,7 @@ public class LabyGame implements Game, Observer {
 		score[0].addObserver(this);
 		life[0].addObserver(this);
 		life[0].setValue(3);
-		score[0].setValue(100);
+		score[0].setValue(90);
 		levelNumber = 0;
 		for (GameLevel level : gameLevels) {
 			endOfGame = new ObservableValue<Boolean>(false);
